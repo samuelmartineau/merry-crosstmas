@@ -1,0 +1,59 @@
+{
+  "name": "merry-crosstmas-server",
+  "version": "1.0.0",
+  "description": "merry-crosstmas server",
+  "main": "server.js",
+  "engines": {
+    "node": ">8.5"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samuelmartineau/merry-crosstmas-server.git"
+  },
+  "keywords": [
+    "christmass",
+    "email",
+    "friends",
+    "cross"
+  ],
+  "author": {
+    "name": "Samuel Martineau",
+    "mail": "samuelmartineau1990@gmail.com",
+    "url": "samuelmartineau.github.io"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samuelmartineau/merry-crosstmas-server/issues"
+  },
+  "homepage": "https://github.com/samuelmartineau/merry-crosstmas-server#readme",
+  "devDependencies": {
+    "jest": "^21.2.1",
+    "nodemon": "^1.7.1",
+    "tape": "^4.2.1"
+  },
+  "dependencies": {
+    "async": "^1.4.2",
+    "body-parser": "^1.14.1",
+    "clone": "^1.0.2",
+    "config": "^1.27.0",
+    "cors": "^2.8.1",
+    "email-templates": "^2.0.1",
+    "express": "^4.13.3",
+    "express-brute": "^0.6.0",
+    "jade": "^1.11.0",
+    "lodash": "^4.17.4",
+    "nodemailer": "^1.5.0",
+    "nodemailer-express-handlebars": "^1.0.0",
+    "nodemailer-mailgun-transport": "^1.0.1",
+    "path": "^0.12.7",
+    "sanitize-html": "^1.10.1"
+  },
+  "pre-commit": [
+    "quality"
+  ]
+}
