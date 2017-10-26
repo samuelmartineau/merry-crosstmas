@@ -1,15 +1,16 @@
 const express = require("express");
+const config = require("config");
 const bodyParser = require("body-parser");
 const app = express();
 const nodemailer = require("nodemailer");
 const mg = require("nodemailer-mailgun-transport");
 const sanitizeHtml = require("sanitize-html");
-const EmailTemplate = require("email-templates").EmailTemplate;
+const pug = require("pug");
 const path = require("path");
-const utils = require("./utils");
-const async = require("async");
 const cors = require("cors");
 const ExpressBrute = require("express-brute");
+const { isValid } = require("./request/request");
+const { getDrawing } = require("./draw/draw");
 
 app.use(cors());
 app.use(bodyParser.json()); // support json encoded bodies
@@ -19,31 +20,16 @@ app.use(
   })
 ); // support encoded bodies
 
-const sanitizeConfig = {
-  allowedTags: ["b", "i", "em", "strong", "p", "div", "br", "span"],
-  allowedAttributes: {
-    "*": ["style"]
-  }
-};
-
 const store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
 const bruteforce = new ExpressBrute(store);
 
 const re = /@friend/gi;
 
-const template = new EmailTemplate(path.join(__dirname, "mail"));
+const template = pug.compileFile(path.resolve(__dirname, "mail/html.pug"));
 
 const port = process.env.PORT || 5000;
 
-// mailer auth
-const auth = {
-  auth: {
-    api_key: process.env.API_KEY,
-    domain: process.env.DOMAIN
-  }
-};
-
-const nodemailerMailgun = nodemailer.createTransport(mg(auth));
+const nodemailerMailgun = nodemailer.createTransport(mg(config.mailgun));
 
 app.get("/", function(req, res) {
   res.redirect(301, "http://samuelmartineau.com/projects/merry-crosstmas/");
@@ -58,27 +44,28 @@ app.get("/test", function(req, res) {
 app.post(
   "/send",
   bruteforce.prevent, // error 429 if we hit this route too often
-  function(req, res) {
-    if (!utils.isValid(req.body)) {
+  (req, res) => {
+    // to add test to check if solution is possible ;)
+    if (!isValid(req.body)) {
       res.status(400).send({
         message: "Invalid Parameters"
       });
     } else {
-      const { contact, content } = req.body;
-      var whoToWho = utils.getWhoToWho(contacts);
+      const { contacts, content } = req.body;
+      const whoToWho = getDrawing(contacts);
+      console.log(whoToWho);
 
-      var contentCleaned = sanitizeHtml(content, sanitizeConfig);
-
+      const contentCleaned = sanitizeHtml(content, config.sanitizeConfig);
       // Send 10 mails at once
       async.mapLimit(
         whoToWho,
         10,
-        function(item, next) {
+        (item, next) => {
           item.content = contentCleaned;
           item.from.name = sanitizeHtml(item.from.name, sanitizeConfig);
           item.to.name = sanitizeHtml(item.to.name, sanitizeConfig);
 
-          template.render(item, function(err, results) {
+          template.render(item, (err, results) => {
             if (err) return next(err);
 
             nodemailerMailgun.sendMail(

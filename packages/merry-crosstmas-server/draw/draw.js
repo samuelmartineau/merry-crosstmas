@@ -1,15 +1,15 @@
-var { uniq, shuffle } = require("lodash");
+const { shuffle } = require("lodash");
 const { getAvailableIds, getRandomItem, findAllPaths } = require("./utils");
 
-const getWhoToWho = contactIds => {
-  return contactIds.map((id, index) => {
+const getWhoToWho = contacts => {
+  return contacts.map((contact, index) => {
     const result = {
-      from: id
+      from: contact
     };
-    if (index === contactIds.length - 1) {
-      result.to = contactIds[0];
+    if (index === contacts.length - 1) {
+      result.to = contacts[0];
     } else {
-      result.to = contactIds[index + 1];
+      result.to = contacts[index + 1];
     }
     return result;
   });
@@ -40,7 +40,26 @@ const whoToWhoWithForbiddenLinks = contacts => {
   return potentialPahts;
 };
 
+function getDrawing(contacts) {
+  const hasForbiddenTarget = contacts.some(c => !!c.forbidden);
+  const randomContacts = shuffle(contacts);
+  const randomContactsMap = randomContacts.reduce(
+    (acc, contact) => Object.assign(acc, { [contact.id]: contact }),
+    {}
+  );
+  let resultIds;
+  if (hasForbiddenTarget) {
+    const potentialPahts = whoToWhoWithForbiddenLinks(randomContacts);
+    const ids =
+      potentialPahts[Math.floor(Math.random() * potentialPahts.length)];
+    return getWhoToWho(ids.map(id => randomContactsMap[id]));
+  } else {
+    return getWhoToWho(contacts);
+  }
+}
+
 module.exports = {
   getWhoToWho,
-  whoToWhoWithForbiddenLinks
+  whoToWhoWithForbiddenLinks,
+  getDrawing
 };
