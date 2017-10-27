@@ -1,6 +1,7 @@
 import React from "react";
 import { withStyles } from "material-ui/styles";
 import MerryHeader from "Header/Header";
+import MerryFooter from "Footer/Footer";
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -20,6 +21,7 @@ const styles = theme => ({
 const App = ({ classes }) => (
   <section className={classes.app}>
     <MerryHeader />
+    <MerryFooter />
   </section>
 );
 
