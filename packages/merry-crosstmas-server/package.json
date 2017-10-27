@@ -32,10 +32,14 @@
   },
   "homepage": "https://github.com/samuelmartineau/merry-crosstmas-server#readme",
   "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
     "jest": "^21.2.1",
     "nodemon": "^1.7.1"
   },
   "dependencies": {
+    "async": "^2.5.0",
     "body-parser": "^1.14.1",
     "config": "^1.27.0",
     "cors": "^2.8.1",
