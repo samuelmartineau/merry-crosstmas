@@ -1,21 +1,34 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { withStyles } from "material-ui/styles";
+import MerryHeader from "Header/Header";
+import logo from "./logo.svg";
+import "./App.css";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
+const styles = theme => ({
+  app: {
+    overflow: "auto",
+    backgroundImage:
+      "linear-gradient(60deg, rgba(255, 165, 150, .5) 5%, rgba(0, 228, 255, .35)), url('background.jpg')",
+    backgroundAttachment: "fixed",
+    backgroundPosition: "center center",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    marginBottom: "3em"
   }
-}
+});
 
-export default App;
+const App = ({ classes }) => (
+  <section className={classes.app}>
+    <MerryHeader />
+  </section>
+);
+
+export default withStyles(styles)(App);
+
+{
+  /* <app-instructions>Write your message and tag the friend name with @friend</app-instructions>
+      <app-editor></app-editor>
+      <app-instructions>Complete your friends informations (minimum 3 people)</app-instructions>
+      <app-contacts></app-contacts>
+      <app-footer></app-footer> */
+}
