@@ -106,12 +106,28 @@ const dupplicatesIds = {
   ],
   content: "<div style='text-align: center;'>test</div>"
 };
+const impossibleForbiddenRules = {
+  contacts: [
+    { id: "1", name: "sam", mail: "sam@test.fr", forbidden: ["2"] },
+    { id: "2", name: "dam", mail: "dam@test.fr", forbidden: ["1"] },
+    { id: "3", name: "aline", mail: "aline@test.fr" }
+  ],
+  content: "<div style='text-align: center;'>test</div>"
+};
 
 const good = {
   contacts: [
     { id: 1, name: "sam", mail: "sam@test.fr" },
     { id: 2, name: "dam", mail: "dam@test.fr" },
     { id: 3, name: "aline", mail: "ali@test.fr" }
+  ],
+  content: "<div style='text-align: center;'>test</div>"
+};
+const goodWithForbidden = {
+  contacts: [
+    { id: 1, name: "sam", mail: "sam@test.fr", forbidden: [3] },
+    { id: 2, name: "dam", mail: "dam@test.fr", forbidden: [1] },
+    { id: 3, name: "aline", mail: "ali@test.fr", forbidden: [2] }
   ],
   content: "<div style='text-align: center;'>test</div>"
 };
@@ -147,8 +163,12 @@ describe("isValid", () => {
   it("should return false if forbidden are not in the list", () => {
     expect(isValid(forbiddenOutOfList)).toEqual(false);
   });
+  it("should return false if forbidden rules are impossible", () => {
+    expect(isValid(impossibleForbiddenRules)).toEqual(false);
+  });
   it("should return true if params are ok", () => {
     expect(isValid(good)).toEqual(true);
+    expect(isValid(goodWithForbidden)).toEqual(true);
   });
 });
 

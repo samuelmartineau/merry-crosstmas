@@ -1,4 +1,5 @@
 const { uniq } = require("lodash");
+const { whoToWhoWithForbiddenLinks } = require("../draw/draw");
 const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
 function validateEmail(email) {
@@ -26,11 +27,13 @@ function isValid(params) {
   }
 
   const mails = [];
+  let hasForbiddenRules = false;
   const ids = params.contacts.map(c => c.id);
   const contactsAreValid = params.contacts.every(contact => {
     mails.push(contact.mail);
     let isForbiddenTargetCorrect = true;
     if (!!contact.forbidden) {
+      hasForbiddenRules = true;
       isForbiddenTargetCorrect =
         Array.isArray(contact.forbidden) &&
         contact.forbidden.every(id => ids.includes(id));
@@ -48,8 +51,14 @@ function isValid(params) {
     return false;
   }
 
-  // each ids should be uniq
+  if (
+    hasForbiddenRules &&
+    whoToWhoWithForbiddenLinks(params.contacts).length === 0
+  ) {
+    return false;
+  }
   if (!containsOnlyUniq(ids)) {
+    // each ids should be uniq
     return false;
   }
 
