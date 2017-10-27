@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer renders correctly 1`] = `
+<footer
+  className="Footer-footer-1"
+>
+  <a
+    href="http://samuelmartineau.com"
+    rel="nofollow"
+    target="_blank"
+  >
+    © Samuel Martineau
+  </a>
+</footer>
+`;
