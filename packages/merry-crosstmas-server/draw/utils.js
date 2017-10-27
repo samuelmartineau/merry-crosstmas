@@ -1,11 +1,6 @@
-const { difference } = require("lodash");
+const { difference } = require('lodash');
 
-const getAvailableIds = (id, ids, forbidden = []) => {
-  return difference(ids, forbidden.concat([id]));
-};
-const getRandomItem = ids => {
-  return ids[Math.floor(Math.random() * ids.length)];
-};
+const getAvailableIds = (id, ids, forbidden = []) => difference(ids, forbidden.concat([id]));
 
 function findAllPaths(graph, start, end, path = []) {
   const size = Object.keys(graph).length;
@@ -32,6 +27,5 @@ function findAllPaths(graph, start, end, path = []) {
 
 module.exports = {
   getAvailableIds,
-  getRandomItem,
-  findAllPaths
+  findAllPaths,
 };
