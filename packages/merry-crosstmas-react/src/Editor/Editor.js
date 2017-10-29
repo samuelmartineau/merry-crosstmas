@@ -18,7 +18,7 @@ const modules = {
   toolbar: "#toolbar"
 };
 
-const defaultMessage = `<div style="text-align: center;"><span style="font-size: 32px;">Hello!!!</span></div>
+const defaultMessage = `<div style="text-align: center;"><span style="font-size: 32px;">Hello @you!!!</span></div>
 <div style="text-align: center;"><br></div>
 <div>Do you remember our conversation? We decided to set up a Santa gift exchange between friends with a budget of <b>20$</b></div>
 <div><br></div>
