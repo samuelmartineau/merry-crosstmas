@@ -43,7 +43,7 @@ module.exports = (req, res) => {
         nodemailerMailgun.sendMail(
           {
             from: 'Merry Crosstmas <messages-noreply@merry-crosstmas.com>',
-            to: item.from.mail,
+            to: item.from.email,
             subject: 'Secret Santa friend designation',
             html: mailHTML.replace(friendRe, mailLocals.toName).replace(youRe, mailLocals.fromName),
             text: mailText,
