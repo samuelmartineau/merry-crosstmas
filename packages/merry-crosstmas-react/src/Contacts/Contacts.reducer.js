@@ -16,8 +16,8 @@ import getNextId from './id.service';
 function getNewContact(id) {
   const color = randomColor();
   return {
-    name: 'a',
-    email: `${color}@test.com`,
+    name: '',
+    email: '',
     forbidden: [],
     id,
     color: randomColor(color),
