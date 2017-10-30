@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 
 app.get('/test', (req, res) => {
   res.send({
-    message: 'API running',
+    message: 'API running 😇',
   });
 });
 
