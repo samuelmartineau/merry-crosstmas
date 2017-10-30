@@ -3,17 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "color": "^2.0.0",
     "material-ui": "^1.0.0-beta.18",
+    "material-ui-icons": "^1.0.0-beta.17",
+    "randomcolor": "^0.5.3",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-flip-move": "^2.9.17",
     "react-quill": "^1.1.0",
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.14",
+    "react-scroll": "^1.6.4",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
-    "redux-debounced": "^0.4.0",
     "redux-thunk": "^2.2.0"
   },
+  "proxy": "http://localhost:5000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

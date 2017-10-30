@@ -13,5 +13,9 @@
   "license": "ISC",
   "devDependencies": {
     "lerna": "^2.4.0"
+  },
+  "dependencies": {
+    "font-color-contrast": "^1.0.3",
+    "lodash.uniq": "^4.5.0"
   }
 }

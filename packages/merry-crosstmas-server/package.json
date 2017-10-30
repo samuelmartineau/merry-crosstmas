@@ -11,10 +11,6 @@
     "start": "node server.js",
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/samuelmartineau/merry-crosstmas-server.git"
-  },
   "keywords": [
     "christmass",
     "email",
@@ -27,10 +23,6 @@
     "url": "samuelmartineau.github.io"
   },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/samuelmartineau/merry-crosstmas-server/issues"
-  },
-  "homepage": "https://github.com/samuelmartineau/merry-crosstmas-server#readme",
   "devDependencies": {
     "eslint": "^4.9.0",
     "eslint-config-airbnb-base": "^12.1.0",
