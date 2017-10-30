@@ -10,10 +10,6 @@ import Chip from 'material-ui/Chip';
 const styles = theme => ({
   root: {
     margin: theme.spacing.unit,
-    '&:after': {
-      content: ' ',
-      display: 'table',
-    },
   },
   chips: {
     display: 'flex',

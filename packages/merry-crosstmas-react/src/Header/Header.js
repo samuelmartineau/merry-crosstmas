@@ -2,7 +2,7 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 
-const styles = theme => ({
+const styles = () => ({
   header: {
     textAlign: 'center',
     margin: '2em 0',
@@ -11,6 +11,7 @@ const styles = theme => ({
     verticalAlign: 'middle',
     height: 'auto',
     width: '3rem',
+    padding: '0.2em',
   },
   headerTitle: {
     fontSize: '3rem',
@@ -50,7 +51,7 @@ const Header = ({ classes }) => (
       <span>Merry Crosstmas</span>
     </h1>
     <p className={classes.headerLinetag}>
-        Receive an email to organize a Secret Santa with your friends
+      Receive an email to organize a Secret Santa with your friends
     </p>
   </header>
 );

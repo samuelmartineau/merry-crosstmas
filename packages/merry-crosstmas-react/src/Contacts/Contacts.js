@@ -24,6 +24,9 @@ const styles = {
   root: {
     flexDirection: 'column',
   },
+  switchRoot: {
+    margin: 0,
+  },
   form: {
     overflow: 'hidden',
   },
@@ -34,6 +37,7 @@ const Contacts = ({
 Props) => (
   <form className={classes.form} onSubmit={onSend} autoComplete="off" role="presentation">
     <FormControlLabel
+      className={classes.switchRoot}
       control={<Switch checked={customMode} onChange={swithMode} />}
       label="Custom Mode (ie: exclusions)"
     />

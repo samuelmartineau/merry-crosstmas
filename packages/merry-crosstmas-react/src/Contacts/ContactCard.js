@@ -14,6 +14,10 @@ import Color from 'color';
 const styles = theme => ({
   paper: {
     margin: '1em auto',
+    '&:after': {
+      content: '" "',
+      display: 'table',
+    },
   },
   container: {
     display: 'flex',
