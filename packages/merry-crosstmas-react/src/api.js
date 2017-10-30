@@ -2,6 +2,8 @@ function parseJSON(response) {
   return response.json();
 }
 
+const apiBase = process.env.REACT_APP_API || '';
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return parseJSON(response);
@@ -12,7 +14,7 @@ function checkStatus(response) {
 }
 
 export const sendMails = (contacts, content) =>
-  fetch('/send', {
+  fetch(`${apiBase}/send`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
