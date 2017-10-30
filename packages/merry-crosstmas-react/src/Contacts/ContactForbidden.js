@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import { getForbiddenById, toggleForbidden } from 'store';
 import fontColorContrast from 'font-color-contrast';
-import Chip from 'material-ui/Chip';
+import Button from 'material-ui/Button';
 
 const styles = theme => ({
   root: {
@@ -20,15 +20,18 @@ const styles = theme => ({
   },
 });
 
-const ContactForbidden = ({ forbidden, classes, onToggle }) => (
+const ContactForbidden = ({
+  forbidden, classes, onToggle, onlyOne,
+}) => (
   <section className={classes.root}>
     <p>Toggle name to disable ability to be drawn</p>
     <article className={classes.chips}>
       {forbidden.map(item => (
-        <Chip
+        <Button
           key={item.id}
           className={classes.chip}
-          label={item.name}
+          disabled={onlyOne && !item.isForbidden}
+          raised={!item.isForbidden}
           onClick={onToggle(item.id)}
           style={
             item.isForbidden
@@ -41,7 +44,9 @@ const ContactForbidden = ({ forbidden, classes, onToggle }) => (
                   opacity: item.isForbidden ? 1 : 0.5,
                 }
           }
-        />
+        >
+          {item.name}
+        </Button>
       ))}
     </article>
   </section>
@@ -55,6 +60,7 @@ export default compose(
   connect(
     (state, { contactId }: Props) => ({
       forbidden: getForbiddenById(state, contactId),
+      onlyOne: getForbiddenById(state, contactId).filter(f => !f.isForbidden).length === 1,
     }),
     (dispatch, { contactId }) => ({
       onToggle(forbiddenId) {
