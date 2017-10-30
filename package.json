@@ -2,7 +2,10 @@
   "name": "merry-crosstmas",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./packages/merry-crosstmas-server/server.js",
+  "engines": {
+    "node": ">= 8.5.0"
+  },
   "scripts": {
     "install": "npm run bootstrap",
     "bootstrap": "lerna bootstrap",
