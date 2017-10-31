@@ -17,7 +17,6 @@ const textTemplate = pug.compileFile(path.resolve(__dirname, 'text.pug'));
 const nodemailerMailgun = nodemailer.createTransport(mg(config.mailgun));
 
 module.exports = (req, res) => {
-  // to add test to check if solution is possible ;)
   if (!isValid(req.body)) {
     res.status(400).send({
       message: 'Invalid Parameters',
