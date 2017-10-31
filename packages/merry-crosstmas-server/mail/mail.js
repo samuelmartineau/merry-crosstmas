@@ -3,7 +3,8 @@ const sanitizeHtml = require('sanitize-html');
 const async = require('async');
 const nodemailer = require('nodemailer');
 const mg = require('nodemailer-mailgun-transport');
-const pug = require('pug');
+const handlebars = require('handlebars');
+const fs = require('fs');
 const path = require('path');
 const { isValid } = require('../request/request');
 const { getDrawing } = require('../draw/draw');
@@ -11,8 +12,8 @@ const { getDrawing } = require('../draw/draw');
 const friendRe = /@friend/gi;
 const youRe = /@you/gi;
 
-const mailTemplate = pug.compileFile(path.resolve(__dirname, 'html.pug'));
-const textTemplate = pug.compileFile(path.resolve(__dirname, 'text.pug'));
+const data = fs.readFileSync(path.resolve(__dirname, 'test.hbs'));
+const mailTemplate = handlebars.compile(data.toString());
 
 const nodemailerMailgun = nodemailer.createTransport(mg(config.mailgun));
 
@@ -35,9 +36,9 @@ module.exports = (req, res) => {
           fromName: sanitizeHtml(item.from.name, config.sanitizeConfig),
           toName: sanitizeHtml(item.to.name, config.sanitizeConfig),
           content: contentCleaned,
+          baseUrl: config.mail.baseUrl,
         };
         const mailHTML = mailTemplate(mailLocals);
-        const mailText = textTemplate(mailLocals);
 
         nodemailerMailgun.sendMail(
           {
@@ -45,7 +46,6 @@ module.exports = (req, res) => {
             to: item.from.email,
             subject: 'Secret Santa friend designation',
             html: mailHTML.replace(friendRe, mailLocals.toName).replace(youRe, mailLocals.fromName),
-            text: mailText,
           },
           (err, responseStatus) => {
             if (err) {

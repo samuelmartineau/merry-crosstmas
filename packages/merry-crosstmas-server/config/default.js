@@ -1,5 +1,8 @@
 module.exports = {
   port: process.env.PORT || 5000,
+  mail: {
+    baseUrl: 'http://samuelmartineau.com/merry-crosstmas/mail/',
+  },
   mailgun: {
     auth: {
       api_key: process.env.API_KEY,
