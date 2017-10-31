@@ -1,11 +1,11 @@
-import React from "react";
-import { withStyles } from "material-ui/styles";
-import { Toolbar } from "react-quill";
+import React from 'react';
+import { withStyles } from 'material-ui/styles';
+import { Toolbar } from 'react-quill';
 
 const styles = {
   toolbar: {
-    background: "#00e4ff"
-  }
+    background: '#00e4ff',
+  },
 };
 
 const CustomToolbar = ({ classes }) => (
@@ -22,18 +22,15 @@ const CustomToolbar = ({ classes }) => (
     <button className="ql-list" value="bullet" />
     <select className="ql-align" defaultValue="">
       <option value="center" />
+      <option value="left" />
       <option value="right" />
       <option value="justify" />
     </select>
     <select className="ql-color" defaultValue="">
-      {Toolbar.defaultColors.map(color => (
-        <option value={color.value} key={color.value} />
-      ))}
+      {Toolbar.defaultColors.map(color => <option value={color.value} key={color.value} />)}
     </select>
     <select className="ql-background" defaultValue="">
-      {Toolbar.defaultColors.map(color => (
-        <option value={color.value} key={color.value} />
-      ))}
+      {Toolbar.defaultColors.map(color => <option value={color.value} key={color.value} />)}
     </select>
     <button className="ql-clean" />
   </div>
