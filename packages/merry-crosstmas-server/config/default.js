@@ -5,8 +5,8 @@ module.exports = {
   },
   mailgun: {
     auth: {
-      api_key: process.env.API_KEY,
-      domain: process.env.DOMAIN,
+      api_key: process.env.MERRY_CROSSTMAS_API_KEY || '',
+      domain: process.env.MERRY_CROSSTMAS_DOMAIN || '',
     },
   },
   sanitizeConfig: {

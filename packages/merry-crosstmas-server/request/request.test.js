@@ -57,17 +57,6 @@ const invalidMail = {
   content: "<div style='text-align: center;'>test</div>",
 };
 
-const invalidName = {
-  contacts: [
-    { id: 1, name: '', email: 'sam@test.fr' },
-    {
-      id: 2, name: 'dam', email: 'dam@test.fr', id: 1,
-    },
-    { id: 3, name: 'aline', email: 'aline@test.fr' },
-  ],
-  content: "<div style='text-align: center;'>test</div>",
-};
-
 const duplicateMail = {
   contacts: [
     { id: 1, name: 'sam', email: 'sam@test.fr' },
@@ -79,7 +68,10 @@ const duplicateMail = {
 const forbiddenWithString = {
   contacts: [
     {
-      id: 1, name: 'sam', email: 'sam@test.fr', forbidden: 'blabla',
+      id: 1,
+      name: 'sam',
+      email: 'sam@test.fr',
+      forbidden: 'blabla',
     },
     { id: 2, name: 'dam', email: 'dam@test.fr' },
     { id: 3, name: 'aline', email: 'aline@test.fr' },
@@ -89,7 +81,10 @@ const forbiddenWithString = {
 const forbiddenWithoutIds = {
   contacts: [
     {
-      id: 1, name: 'sam', email: 'sam@test.fr', forbidden: ['4'],
+      id: 1,
+      name: 'sam',
+      email: 'sam@test.fr',
+      forbidden: ['4'],
     },
     { id: 2, name: 'dam', email: 'dam@test.fr' },
     { id: 3, name: 'aline', email: 'aline@test.fr' },
@@ -99,7 +94,10 @@ const forbiddenWithoutIds = {
 const forbiddenOutOfList = {
   contacts: [
     {
-      id: '1', name: 'sam', email: 'sam@test.fr', forbidden: ['4'],
+      id: '1',
+      name: 'sam',
+      email: 'sam@test.fr',
+      forbidden: ['4'],
     },
     { id: '2', name: 'dam', email: 'dam@test.fr' },
     { id: '3', name: 'aline', email: 'aline@test.fr' },
@@ -109,7 +107,10 @@ const forbiddenOutOfList = {
 const dupplicatesIds = {
   contacts: [
     {
-      id: '1', name: 'sam', email: 'sam@test.fr', forbidden: ['4'],
+      id: '1',
+      name: 'sam',
+      email: 'sam@test.fr',
+      forbidden: ['4'],
     },
     { id: '1', name: 'dam', email: 'dam@test.fr' },
     { id: '1', name: 'aline', email: 'aline@test.fr' },
@@ -119,10 +120,16 @@ const dupplicatesIds = {
 const impossibleForbiddenRules = {
   contacts: [
     {
-      id: '1', name: 'sam', email: 'sam@test.fr', forbidden: ['2'],
+      id: '1',
+      name: 'sam',
+      email: 'sam@test.fr',
+      forbidden: ['2'],
     },
     {
-      id: '2', name: 'dam', email: 'dam@test.fr', forbidden: ['1'],
+      id: '2',
+      name: 'dam',
+      email: 'dam@test.fr',
+      forbidden: ['1'],
     },
     { id: '3', name: 'aline', email: 'aline@test.fr' },
   ],
@@ -140,13 +147,22 @@ const good = {
 const goodWithForbidden = {
   contacts: [
     {
-      id: 1, name: 'sam', email: 'sam@test.fr', forbidden: [3],
+      id: 1,
+      name: 'sam',
+      email: 'sam@test.fr',
+      forbidden: [3],
     },
     {
-      id: 2, name: 'dam', email: 'dam@test.fr', forbidden: [1],
+      id: 2,
+      name: 'dam',
+      email: 'dam@test.fr',
+      forbidden: [1],
     },
     {
-      id: 3, name: 'aline', email: 'ali@test.fr', forbidden: [2],
+      id: 3,
+      name: 'aline',
+      email: 'ali@test.fr',
+      forbidden: [2],
     },
   ],
   content: "<div style='text-align: center;'>test</div>",

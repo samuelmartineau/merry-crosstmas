@@ -10,8 +10,8 @@
     "install": "npm run bootstrap",
     "bootstrap": "lerna bootstrap",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:client": "cd packages/merry-crosstmas-react && npm run build",
-    "deploy:client": "git-directory-deploy --directory packages/merry-crosstmas-react/build --branch gh-pages",
+    "build:client": "cd packages/merry-crosstmas-client && npm run build",
+    "deploy:client": "git-directory-deploy --directory packages/merry-crosstmas-client/build --branch gh-pages",
     "deliver:client": "npm run build:client && npm run deploy:client",
     "start": "cd packages/merry-crosstmas-server && npm start"
   },
@@ -20,7 +20,7 @@
   "license": "ISC",
   "devDependencies": {
     "git-directory-deploy": "^1.5.1",
-    "lerna": "^2.4.0"
+    "lerna": "^3.18.4"
   },
   "dependencies": {
     "font-color-contrast": "^1.0.3",

@@ -1,2 +1,12 @@
 {
+  "eslint.workingDirectories": [
+    {
+      "directory": "packages/merry-crosstmas-client",
+      "changeProcessCWD": true
+    },
+    {
+      "directory": "packages/merry-crosstmas-server",
+      "changeProcessCWD": true
+    }
+  ]
 }

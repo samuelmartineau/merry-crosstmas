@@ -1,7 +1,7 @@
 const { uniq } = require('lodash');
 const { whoToWhoWithForbiddenLinks } = require('../draw/draw');
 
-const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
 
 function validateEmail(email) {
   return re.test(email);
@@ -33,20 +33,16 @@ function isValid(params) {
   const mails = [];
   let hasForbiddenRules = false;
   const ids = params.contacts.map(c => c.id);
-  const contactsAreValid = params.contacts.every((contact) => {
+  const contactsAreValid = params.contacts.every(contact => {
     mails.push(contact.email);
     let isForbiddenTargetCorrect = true;
     if (contact.forbidden) {
       hasForbiddenRules = true;
       isForbiddenTargetCorrect =
-        Array.isArray(contact.forbidden) && contact.forbidden.every(id => ids.includes(id));
+        Array.isArray(contact.forbidden) &&
+        contact.forbidden.every(id => ids.includes(id));
     }
-    console.log(
-      contact.name.length > 0,
-      validateEmail(contact.email),
-      isForbiddenTargetCorrect,
-      Object.prototype.hasOwnProperty.call(contact, 'id'),
-    );
+
     return (
       contact.name.length > 0 &&
       validateEmail(contact.email) &&
@@ -61,7 +57,10 @@ function isValid(params) {
     return false;
   }
 
-  if (hasForbiddenRules && whoToWhoWithForbiddenLinks(params.contacts).length === 0) {
+  if (
+    hasForbiddenRules &&
+    whoToWhoWithForbiddenLinks(params.contacts).length === 0
+  ) {
     console.error('no path possible with forbidden rules');
     return false;
   }

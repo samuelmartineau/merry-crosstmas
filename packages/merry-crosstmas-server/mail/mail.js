@@ -45,7 +45,9 @@ module.exports = (req, res) => {
             from: 'Merry Crosstmas <messages-noreply@merry-crosstmas.com>',
             to: item.from.email,
             subject: 'Secret Santa friend designation',
-            html: mailHTML.replace(friendRe, mailLocals.toName).replace(youRe, mailLocals.fromName),
+            html: mailHTML
+              .replace(friendRe, mailLocals.toName)
+              .replace(youRe, mailLocals.fromName),
           },
           (err, responseStatus) => {
             if (err) {
@@ -55,7 +57,7 @@ module.exports = (req, res) => {
           },
         );
       },
-      (err) => {
+      err => {
         if (err) {
           console.error('error sending mail', err);
           res.status(500).send({
