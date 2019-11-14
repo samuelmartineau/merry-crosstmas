@@ -1,7 +1,9 @@
 module.exports = {
   port: process.env.MERRY_CROSSTMAS_PORT || 5000,
   mail: {
-    baseUrl: 'http://samuelmartineau.com/merry-crosstmas/mail/',
+    baseUrl:
+      process.env.MERRY_CROSSTMAS_BASE_URL ||
+      'http://samuelmartineau.com/merry-crosstmas/mail/',
   },
   mailgun: {
     auth: {
