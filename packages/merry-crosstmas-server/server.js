@@ -8,9 +8,11 @@ const mailRoute = require('./mail/mail');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({
-  extended: true,
-})); // support encoded bodies
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  }),
+); // support encoded bodies
 
 const store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
 const bruteforce = new ExpressBrute(store);
@@ -31,11 +33,11 @@ app.post(
   mailRoute,
 );
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   console.log('uncaughtException', err);
 });
 
 // START THE SERVER
 // =============================================================================
 app.listen(config.port);
-console.log('Magic happens on port :', config.port);
+console.log('Magic happens on port :', config.MERRY_CROSSTMAS_PORT);

@@ -1,5 +1,5 @@
 module.exports = {
-  port: process.env.PORT || 5000,
+  port: process.env.MERRY_CROSSTMAS_PORT || 5000,
   mail: {
     baseUrl: 'http://samuelmartineau.com/merry-crosstmas/mail/',
   },
