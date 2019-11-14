@@ -12,7 +12,7 @@ const { getDrawing } = require('../draw/draw');
 const friendRe = /@friend/gi;
 const youRe = /@you/gi;
 
-const data = fs.readFileSync(path.resolve(__dirname, 'test.hbs'));
+const data = fs.readFileSync(path.resolve(__dirname, 'template.hbs'));
 const mailTemplate = handlebars.compile(data.toString());
 
 const nodemailerMailgun = nodemailer.createTransport(mg(config.mailgun));
