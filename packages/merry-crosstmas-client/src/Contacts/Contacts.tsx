@@ -2,34 +2,36 @@ import React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import FlipMove from 'react-flip-move';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { toggleSettings, send } from '../store';
 import ContactCard from '../Contacts/ContactCard';
 import ContactActions from '../Contacts/ContactActions';
+import { WithStyles } from '@material-ui/styles';
+
+const styles = () =>
+  createStyles({
+    root: {
+      flexDirection: 'column',
+    },
+    switchRoot: {
+      margin: 0,
+    },
+    form: {
+      overflow: 'hidden',
+    },
+  });
 
 type Props = {
   contacts: Array<number>;
   classes: {
     root: any;
   };
-  swithMode: Function;
-  onSend: Function;
+  swithMode: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSend: (event: React.FormEvent<HTMLFormElement>) => void;
   customMode: boolean;
-};
-
-const styles = {
-  root: {
-    flexDirection: 'column',
-  },
-  switchRoot: {
-    margin: 0,
-  },
-  form: {
-    overflow: 'hidden',
-  },
-};
+} & WithStyles<typeof styles>;
 
 const Contacts = ({
   contacts,

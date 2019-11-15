@@ -10,6 +10,7 @@ import MerryFooter from '../Footer/Footer';
 import MerryContacts from '../Contacts/Contacts';
 import MerryNotifications from '../Notifications/Notifications';
 import Success from './Success';
+import { AppState } from '../store/reducer';
 
 // Theme-dependent styles
 const styles = (theme: Theme) =>
@@ -39,7 +40,7 @@ const styles = (theme: Theme) =>
     },
   });
 
-type Props = {} & WithStyles<typeof styles>;
+type Props = StateProps & WithStyles<typeof styles>;
 
 const App = ({ classes, status }: Props) => (
   <section className={classes.app}>
@@ -71,6 +72,10 @@ const App = ({ classes, status }: Props) => (
   </section>
 );
 
-export default connect(state => ({
+const mapStateToProps = (state: AppState) => ({
   status: state.contacts.status,
-}))(withStyles(styles)(App));
+});
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(withStyles(styles)(App));

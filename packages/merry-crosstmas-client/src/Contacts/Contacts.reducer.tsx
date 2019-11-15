@@ -12,20 +12,29 @@ import {
   RESET,
 } from './Contacts.types';
 import getNextId from './id.service';
+import { ContactsActions } from '../store/actions';
 
-function getNewContact(id) {
+function getNewContact(id: number) {
   const color = randomColor();
   return {
     name: '',
     email: '',
-    forbidden: [],
+    forbidden: [] as number[],
     id,
-    color: randomColor(color),
+    color,
   };
 }
 
+type Contact = {
+  name: string;
+  email: string;
+  forbidden: number[];
+  id: number;
+  color: string;
+};
+
 const initialContacts = Array(3)
-  .fill()
+  .fill(null)
   .map(() => getNewContact(getNextId()));
 
 const initialMapContacts = initialContacts.reduce(
@@ -33,11 +42,16 @@ const initialMapContacts = initialContacts.reduce(
     Object.assign(acc, {
       [contact.id]: contact,
     }),
-  {},
+  {} as { [id: number]: Contact },
 );
 const initialAllContacts = initialContacts.map(contact => contact.id);
 
-export const mapReducer = (state = initialMapContacts, action) => {
+export type MapState = { [id: number]: Contact };
+
+export const mapReducer = (
+  state: MapState = initialMapContacts,
+  action: ContactsActions,
+) => {
   switch (action.type) {
     case ADD_CHAR:
       return {
@@ -86,9 +100,14 @@ export const mapReducer = (state = initialMapContacts, action) => {
       return state;
   }
 };
-export const getContactById = (state, id) => state[id];
+export const getContactById = (state: MapState, id: number) => state[id];
 
-export const allReducer = (state = initialAllContacts, action) => {
+type AllState = number[];
+
+export const allReducer = (
+  state: AllState = initialAllContacts,
+  action: ContactsActions,
+) => {
   switch (action.type) {
     case ADD_CONTACT: {
       return [...state, action.id];
@@ -104,7 +123,13 @@ export const allReducer = (state = initialAllContacts, action) => {
       return state;
   }
 };
-export const customModeReducer = (state = false, action) => {
+
+type CustomModeState = boolean;
+
+export const customModeReducer = (
+  state: CustomModeState = false,
+  action: ContactsActions,
+) => {
   switch (action.type) {
     case TOGGLE_MODE: {
       return !state;
@@ -123,7 +148,16 @@ const initialStatus = {
   error: false,
 };
 
-export const statusReducer = (state = initialStatus, action) => {
+type StateState = {
+  sending: boolean;
+  sended: boolean;
+  error: boolean;
+};
+
+export const statusReducer = (
+  state: StateState = initialStatus,
+  action: ContactsActions,
+) => {
   switch (action.type) {
     case MAIL_SENDING: {
       return {
@@ -154,12 +188,14 @@ export const statusReducer = (state = initialStatus, action) => {
   }
 };
 
-export const getForbiddenById = (state, contactId) => {
+export const getForbiddenById = (state: StateType, contactId: number) => {
   const contact = getContactById(state.map, contactId);
-  return state.all.filter(c => c !== contactId).map(cId => ({
-    ...getContactById(state.map, cId),
-    isForbidden: contact.forbidden.includes(cId),
-  }));
+  return state.all
+    .filter(c => c !== contactId)
+    .map(cId => ({
+      ...getContactById(state.map, cId),
+      isForbidden: contact.forbidden.includes(cId),
+    }));
 };
 
 const reducer = combineReducers({
@@ -168,5 +204,7 @@ const reducer = combineReducers({
   customMode: customModeReducer,
   status: statusReducer,
 });
+
+type StateType = ReturnType<typeof reducer>;
 
 export default reducer;

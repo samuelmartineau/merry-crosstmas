@@ -3,11 +3,11 @@ import React from 'react';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { WithStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { reset } from '../store';
+import { Dispatch } from 'redux';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -21,7 +21,7 @@ const styles = (theme: Theme) =>
     },
   });
 
-type Props = {} & WithStyles<typeof styles>;
+type Props = DispatchProps & WithStyles<typeof styles>;
 
 const Success = ({ classes, onReset }: Props) => (
   <Paper className={classes.success}>
@@ -38,14 +38,12 @@ const Success = ({ classes, onReset }: Props) => (
   </Paper>
 );
 
-export default compose(
-  connect(
-    () => ({}),
-    dispatch => ({
-      onReset() {
-        dispatch(reset());
-      },
-    }),
-  ),
-  withStyles(styles),
-)(Success);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onReset() {
+    dispatch(reset());
+  },
+});
+
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Success));

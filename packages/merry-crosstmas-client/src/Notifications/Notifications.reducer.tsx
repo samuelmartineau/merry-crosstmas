@@ -1,12 +1,19 @@
 import { SET_NOTIFICATION, CLOSE_NOTIFICATION } from './Notifications.types';
+import { NotificationsActions } from '../store/actions';
+
+type State = {
+  kind: 'error' | 'success' | null;
+  message: string;
+  show: boolean;
+};
 
 export const reducer = (
-  state = {
+  state: State = {
     show: false,
     kind: null,
     message: '',
   },
-  action,
+  action: NotificationsActions,
 ) => {
   switch (action.type) {
     case SET_NOTIFICATION: {

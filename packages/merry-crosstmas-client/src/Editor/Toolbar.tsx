@@ -1,16 +1,16 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Toolbar } from 'react-quill';
+import { WithStyles, createStyles } from '@material-ui/styles';
 
-const styles = {
-  toolbar: {
-    background: '#00e4ff',
-  },
-};
+const styles = () =>
+  createStyles({
+    toolbar: {
+      background: '#00e4ff',
+    },
+  });
 
-type Props = {
-  classes: string;
-};
+type Props = WithStyles<typeof styles>;
 
 const CustomToolbar = ({ classes }: Props) => (
   <div id="toolbar" className={classes.toolbar}>

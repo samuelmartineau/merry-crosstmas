@@ -1,6 +1,7 @@
 import { RESET } from '../Contacts/Contacts.types';
 import { EDIT_MESSAGE } from './Editor.types';
 import { EditorActions } from './Editor.actions';
+import { ContactsActions } from '../store/actions';
 
 type State = string;
 
@@ -10,7 +11,7 @@ const defaultMessage = `
 
 export const reducer = (
   state: State = defaultMessage,
-  action: EditorActions,
+  action: EditorActions | ContactsActions,
 ) => {
   switch (action.type) {
     case EDIT_MESSAGE: {

@@ -56,13 +56,16 @@ const ContactForbidden = ({
   </section>
 );
 
-type Props = {
-  contactId: number;
-};
-
 export default compose(
   connect(
-    (state, { contactId }: Props) => ({
+    (
+      state,
+      {
+        contactId,
+      }: {
+        contactId: number;
+      },
+    ) => ({
       forbidden: getForbiddenById(state, contactId),
       onlyOne:
         getForbiddenById(state, contactId).filter(f => !f.isForbidden)

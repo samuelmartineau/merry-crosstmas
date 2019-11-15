@@ -1,41 +1,44 @@
-
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@material-ui/styles';
 
-const styles = () => ({
-  header: {
-    textAlign: 'center',
-    margin: '2em 0',
-  },
-  headerIcon: {
-    verticalAlign: 'middle',
-    height: 'auto',
-    width: '3rem',
-    padding: '0.2em',
-  },
-  headerTitle: {
-    fontSize: '3rem',
-    margin: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerLinetag: {
-    fontWeight: 700,
-    margin: '.5em 0',
-    '&:after': {
-      background: 'white',
-      content: '',
-      display: 'block',
-      height: '2px',
-      margin: '1.5em auto 0',
-      position: 'relative',
-      width: '50%',
+const styles = () =>
+  createStyles({
+    header: {
+      textAlign: 'center',
+      margin: '2em 0',
     },
-  },
-});
+    headerIcon: {
+      verticalAlign: 'middle',
+      height: 'auto',
+      width: '3rem',
+      padding: '0.2em',
+    },
+    headerTitle: {
+      fontSize: '3rem',
+      margin: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    headerLinetag: {
+      fontWeight: 700,
+      margin: '.5em 0',
+      '&:after': {
+        background: 'white',
+        content: '',
+        display: 'block',
+        height: '2px',
+        margin: '1.5em auto 0',
+        position: 'relative',
+        width: '50%',
+      },
+    },
+  });
 
-const Header = ({ classes }) => (
+type Props = WithStyles<typeof styles>;
+
+const Header = ({ classes }: Props) => (
   <header className={classes.header}>
     <h1 className={classes.headerTitle}>
       <svg

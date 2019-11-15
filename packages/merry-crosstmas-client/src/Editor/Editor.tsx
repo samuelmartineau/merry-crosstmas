@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CustomToolbar from '../Editor/Toolbar';
 import { edit } from '../store';
 import 'react-quill/dist/quill.snow.css';
+import { WithStyles, createStyles } from '@material-ui/styles';
 
 const BackgroundClass = Quill.import('attributors/style/background');
 const ColorClass = Quill.import('attributors/style/color');
@@ -34,13 +35,16 @@ const formats = [
   'align',
 ];
 
-const styles = {
-  testEditor: {
-    background: 'white',
-  },
-};
+const styles = () =>
+  createStyles({
+    testEditor: {
+      background: 'white',
+    },
+  });
 
-const MerryEditor = ({ classes, message, onEdit }) => (
+type Props = WithStyles<typeof styles>;
+
+const MerryEditor = ({ classes, message, onEdit }: Props) => (
   <div className={classes.testEditor}>
     <CustomToolbar />
     <ReactQuill

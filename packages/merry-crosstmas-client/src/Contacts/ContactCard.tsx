@@ -1,5 +1,4 @@
 import React from 'react';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -10,6 +9,8 @@ import { WithStyles } from '@material-ui/styles';
 import Color from 'color';
 import ContactForbidden from '../Contacts/ContactForbidden';
 import { getContactById, addChar, removeContact } from '../store';
+import { Dispatch } from 'redux';
+import { AppState } from '../store/reducer';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -37,14 +38,11 @@ const styles = (theme: Theme) =>
     },
   });
 
-type ContactCardProps = {
-  contact: {};
-  classes: {};
-  onChar: Function;
-  onRemove: Function;
+type Props = {
   isRemovable: boolean;
-  customMode: boolean;
-} & WithStyles<typeof styles>;
+} & StateProps &
+  DispatchProps &
+  WithStyles<typeof styles>;
 
 const ContactCard = ({
   contact,
@@ -53,7 +51,7 @@ const ContactCard = ({
   onRemove,
   isRemovable,
   customMode,
-}: ContactCardProps) => (
+}: Props) => (
   <Paper className={classes.paper}>
     {isRemovable && (
       <IconButton
@@ -67,7 +65,9 @@ const ContactCard = ({
     <div
       className={classes.container}
       style={{
-        background: Color(contact.color).fade(0.5),
+        background: Color(contact.color)
+          .fade(0.5)
+          .string(),
       }}
     >
       <TextField
@@ -96,24 +96,40 @@ const ContactCard = ({
   </Paper>
 );
 
-type Props = {
-  contactId: number;
-};
+const mapStateToProps = (
+  state: AppState,
+  {
+    contactId,
+  }: {
+    contactId: number;
+  },
+) => ({
+  contact: getContactById(state, contactId),
+  customMode: state.contacts.customMode,
+});
 
-export default compose(
-  connect(
-    (state, { contactId }: Props) => ({
-      contact: getContactById(state, contactId),
-      customMode: state.contacts.customMode,
-    }),
-    (dispatch, props) => ({
-      onChar(key) {
-        return evt => dispatch(addChar(props.contactId, key, evt.target.value));
-      },
-      onRemove() {
-        dispatch(removeContact(props.contactId));
-      },
-    }),
-  ),
-  withStyles(styles),
-)(ContactCard);
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  {
+    contactId,
+  }: {
+    contactId: number;
+  },
+) => ({
+  onChar(key: 'email' | 'name') {
+    return (evt: React.ChangeEvent<HTMLInputElement>) =>
+      dispatch(addChar(contactId, key, evt.currentTarget.value));
+  },
+  onRemove() {
+    dispatch(removeContact(contactId));
+  },
+});
+
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(ContactCard));
