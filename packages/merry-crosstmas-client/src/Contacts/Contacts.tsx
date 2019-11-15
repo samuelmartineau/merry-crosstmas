@@ -1,5 +1,4 @@
 import React from 'react';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import FlipMove from 'react-flip-move';
 import { withStyles, createStyles } from '@material-ui/core/styles';
@@ -9,6 +8,8 @@ import { toggleSettings, send } from '../store';
 import ContactCard from '../Contacts/ContactCard';
 import ContactActions from '../Contacts/ContactActions';
 import { WithStyles } from '@material-ui/styles';
+import { AppState } from '../store/reducer';
+import { ThunkDispatch } from 'redux-thunk';
 
 const styles = () =>
   createStyles({
@@ -23,15 +24,7 @@ const styles = () =>
     },
   });
 
-type Props = {
-  contacts: Array<number>;
-  classes: {
-    root: any;
-  };
-  swithMode: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSend: (event: React.FormEvent<HTMLFormElement>) => void;
-  customMode: boolean;
-} & WithStyles<typeof styles>;
+type Props = StateProps & DispatchProps & WithStyles<typeof styles>;
 
 const Contacts = ({
   contacts,
@@ -58,8 +51,6 @@ const Contacts = ({
             isRemovable={contacts.length > 3}
             contactId={contact}
             key={contact}
-            order={index}
-            scrollTo={index > 2 && index === contacts.length - 1}
           />
         ))}
       </FlipMove>
@@ -68,21 +59,26 @@ const Contacts = ({
   </form>
 );
 
-export default compose(
-  connect(
-    state => ({
-      customMode: state.contacts.customMode,
-      contacts: state.contacts.all,
-    }),
-    dispatch => ({
-      swithMode() {
-        dispatch(toggleSettings());
-      },
-      onSend(evt) {
-        evt.preventDefault();
-        dispatch(send());
-      },
-    }),
-  ),
-  withStyles(styles),
-)(Contacts);
+const mapStateToProps = (state: AppState) => ({
+  customMode: state.contacts.customMode,
+  contacts: state.contacts.all,
+});
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
+  swithMode() {
+    dispatch(toggleSettings());
+  },
+  onSend(evt: React.FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
+    dispatch(send());
+  },
+});
+
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(Contacts));

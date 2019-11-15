@@ -14,6 +14,7 @@ import {
 import getNextId from './id.service';
 import { Dispatch } from 'redux';
 import { MapState } from './Contacts.reducer';
+import { SendMails } from '../api';
 
 export const addChar = (id: number, key: 'name' | 'email', value: string) =>
   ({
@@ -68,7 +69,11 @@ export const reset = () =>
   } as const);
 
 export function send(contactsMap: MapState, message: string) {
-  return async (dispatch: Dispatch, _: any, { sendMails }) => {
+  return async (
+    dispatch: Dispatch,
+    _: any,
+    { sendMails }: { sendMails: SendMails },
+  ) => {
     const contacts = Object.values(contactsMap);
     const emails = contacts.map(c => c.email);
     const isEmailsUniq = uniq(emails).length === emails.length;

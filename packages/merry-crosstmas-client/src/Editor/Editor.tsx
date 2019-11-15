@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactQuill, { Quill } from 'react-quill';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CustomToolbar from '../Editor/Toolbar';
 import { edit } from '../store';
 import 'react-quill/dist/quill.snow.css';
 import { WithStyles, createStyles } from '@material-ui/styles';
+import { Dispatch } from 'redux';
+import { AppState } from '../store/reducer';
 
 const BackgroundClass = Quill.import('attributors/style/background');
 const ColorClass = Quill.import('attributors/style/color');
@@ -42,7 +43,7 @@ const styles = () =>
     },
   });
 
-type Props = WithStyles<typeof styles>;
+type Props = StateProps & DispatchProps & WithStyles<typeof styles>;
 
 const MerryEditor = ({ classes, message, onEdit }: Props) => (
   <div className={classes.testEditor}>
@@ -55,16 +56,22 @@ const MerryEditor = ({ classes, message, onEdit }: Props) => (
     />
   </div>
 );
-export default compose(
-  connect(
-    state => ({
-      message: state.editor,
-    }),
-    dispatch => ({
-      onEdit(value) {
-        dispatch(edit(value));
-      },
-    }),
-  ),
-  withStyles(styles),
-)(MerryEditor);
+
+const mapStateToProps = (state: AppState) => ({
+  message: state.editor,
+});
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onEdit(value: string) {
+    dispatch(edit(value));
+  },
+});
+
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(MerryEditor));

@@ -1,11 +1,12 @@
 import React from 'react';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { WithStyles } from '@material-ui/styles';
 import fontColorContrast from 'font-color-contrast';
 import Button from '@material-ui/core/Button';
 import { getForbiddenById, toggleForbidden } from '../store';
+import { Dispatch } from 'redux';
+import { AppState } from '../store/reducer';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -21,12 +22,9 @@ const styles = (theme: Theme) =>
     },
   });
 
-const ContactForbidden = ({
-  forbidden,
-  classes,
-  onToggle,
-  onlyOne,
-}: WithStyles<typeof styles>) => (
+type Props = StateProps & DispatchProps & WithStyles<typeof styles>;
+
+const ContactForbidden = ({ forbidden, classes, onToggle, onlyOne }: Props) => (
   <section className={classes.root}>
     <p>Toggle name to disable ability to be drawn</p>
     <article className={classes.chips}>
@@ -35,7 +33,6 @@ const ContactForbidden = ({
           key={item.id}
           className={classes.chip}
           disabled={onlyOne && !item.isForbidden}
-          raised={!item.isForbidden}
           onClick={onToggle(item.id)}
           style={
             item.isForbidden
@@ -56,26 +53,37 @@ const ContactForbidden = ({
   </section>
 );
 
-export default compose(
-  connect(
-    (
-      state,
-      {
-        contactId,
-      }: {
-        contactId: number;
-      },
-    ) => ({
-      forbidden: getForbiddenById(state, contactId),
-      onlyOne:
-        getForbiddenById(state, contactId).filter(f => !f.isForbidden)
-          .length === 1,
-    }),
-    (dispatch, { contactId }) => ({
-      onToggle(forbiddenId) {
-        return () => dispatch(toggleForbidden(contactId, forbiddenId));
-      },
-    }),
-  ),
-  withStyles(styles),
-)(ContactForbidden);
+const mapStateToProps = (
+  state: AppState,
+  {
+    contactId,
+  }: {
+    contactId: number;
+  },
+) => ({
+  forbidden: getForbiddenById(state, contactId),
+  onlyOne:
+    getForbiddenById(state, contactId).filter(f => !f.isForbidden).length === 1,
+});
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  {
+    contactId,
+  }: {
+    contactId: number;
+  },
+) => ({
+  onToggle(forbiddenId: number) {
+    return () => dispatch(toggleForbidden(contactId, forbiddenId));
+  },
+});
+
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(ContactForbidden));

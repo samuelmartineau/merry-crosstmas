@@ -25,7 +25,7 @@ function getNewContact(id: number) {
   };
 }
 
-type Contact = {
+export type Contact = {
   name: string;
   email: string;
   forbidden: number[];
