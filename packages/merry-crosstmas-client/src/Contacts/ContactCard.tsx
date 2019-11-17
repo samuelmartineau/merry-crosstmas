@@ -15,6 +15,7 @@ import { AppState } from '../store/reducer';
 const styles = (theme: Theme) =>
   createStyles({
     paper: {
+      position: 'relative',
       margin: '1em auto',
       '&:after': {
         content: '" "',
