@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import FlipMove from 'react-flip-move';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -32,32 +31,33 @@ const Contacts = ({
   swithMode,
   customMode,
   onSend,
-}: Props) => (
-  <form
-    className={classes.form}
-    onSubmit={onSend}
-    autoComplete="off"
-    role="presentation"
-  >
-    <FormControlLabel
-      className={classes.switchRoot}
-      control={<Switch checked={customMode} onChange={swithMode} />}
-      label="Custom Mode (ie: exclusions)"
-    />
-    <div className={classes.root}>
-      <FlipMove duration={200} easing="ease-out">
-        {contacts.map((contact, index) => (
+}: Props) => {
+
+  return (
+    <form
+      className={classes.form}
+      onSubmit={onSend}
+      autoComplete="off"
+      role="presentation"
+    >
+      <FormControlLabel
+        className={classes.switchRoot}
+        control={<Switch checked={customMode} onChange={swithMode} />}
+        label="Custom Mode (ie: exclusions)"
+      />
+      <div className={classes.root}>
+        {contacts.map((contact) => (
           <ContactCard
             isRemovable={contacts.length > 3}
             contactId={contact}
             key={contact}
           />
         ))}
-      </FlipMove>
-    </div>
-    <ContactActions />
-  </form>
-);
+      </div>
+      <ContactActions />
+    </form>
+  )
+};
 
 const mapStateToProps = (state: AppState) => ({
   customMode: state.contacts.customMode,

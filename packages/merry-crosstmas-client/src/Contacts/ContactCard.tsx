@@ -51,50 +51,52 @@ const ContactCard = ({
   onRemove,
   isRemovable,
   customMode,
-}: Props) => (
-  <Paper className={classes.paper}>
-    {isRemovable && (
-      <IconButton
-        className={classes.button}
-        aria-label="Delete"
-        onClick={onRemove}
+}: Props) => {
+  return (
+    <Paper className={classes.paper}>
+      {isRemovable && (
+        <IconButton
+          className={classes.button}
+          aria-label="Delete"
+          onClick={onRemove}
+        >
+          <DeleteIcon />
+        </IconButton>
+      )}
+      <div
+        className={classes.container}
+        style={{
+          background: Color(contact.color)
+            .fade(0.5)
+            .string(),
+        }}
       >
-        <DeleteIcon />
-      </IconButton>
-    )}
-    <div
-      className={classes.container}
-      style={{
-        background: Color(contact.color)
-          .fade(0.5)
-          .string(),
-      }}
-    >
-      <TextField
-        label="Name"
-        placeholder="Toto"
-        className={classes.textField}
-        name={`name-${contact.id}`}
-        margin="normal"
-        value={contact.name}
-        onChange={onChar('name')}
-        required
-      />
-      <TextField
-        label="Email"
-        placeholder="toto@gmail.com"
-        className={classes.textField}
-        margin="normal"
-        name={`email-${contact.id}`}
-        type="email"
-        value={contact.email}
-        onChange={onChar('email')}
-        required
-      />
-    </div>
-    {customMode && <ContactForbidden contactId={contact.id} />}
-  </Paper>
-);
+        <TextField
+          label="Name"
+          placeholder="Toto"
+          className={classes.textField}
+          name={`name-${contact.id}`}
+          margin="normal"
+          value={contact.name}
+          onChange={onChar('name')}
+          required
+        />
+        <TextField
+          label="Email"
+          placeholder="toto@gmail.com"
+          className={classes.textField}
+          margin="normal"
+          name={`email-${contact.id}`}
+          type="email"
+          value={contact.email}
+          onChange={onChar('email')}
+          required
+        />
+      </div>
+      {customMode && <ContactForbidden contactId={contact.id} />}
+    </Paper>
+  );
+}
 
 const mapStateToProps = (
   state: AppState,
