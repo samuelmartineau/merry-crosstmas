@@ -12,9 +12,23 @@ module.exports = {
     },
   },
   sanitizeConfig: {
-    allowedTags: ['b', 'i', 'u', 'em', 'strong', 'p', 'div', 'br', 'span'],
+    allowedTags: [
+      'b',
+      'i',
+      'u',
+      'em',
+      'strong',
+      'p',
+      'div',
+      'br',
+      'span',
+      'a',
+      'img',
+    ],
     allowedAttributes: {
       '*': ['style'],
+      img: ['src'],
+      a: ['href', 'rel', 'target'],
     },
   },
 };
