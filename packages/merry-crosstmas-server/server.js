@@ -40,4 +40,4 @@ process.on('uncaughtException', err => {
 // START THE SERVER
 // =============================================================================
 app.listen(config.port);
-console.log('Magic happens on port :', config.MERRY_CROSSTMAS_PORT);
+console.log('Magic happens on port :', config.port);

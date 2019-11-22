@@ -7,6 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import { WithStyles, createStyles } from '@material-ui/styles';
 import { Dispatch } from 'redux';
 import { AppState } from '../store/reducer';
+import CustomToolbar from './CustomToolbar';
 
 const BackgroundClass = Quill.import('attributors/style/background');
 const ColorClass = Quill.import('attributors/style/color');
@@ -19,15 +20,7 @@ Quill.register(SizeStyle, true);
 Quill.register(AlignStyle, true);
 
 const modules = {
-  toolbar: [
-    [{ size: ['small', false, 'large', 'huge'] }],
-    ['bold', 'italic', 'underline'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    [{ align: [] }],
-    [{ color: [] }, { background: [] }],
-    ['link', 'image'],
-    ['clean'],
-  ],
+  toolbar: '#toolbar',
 };
 
 const formats = [
@@ -42,7 +35,6 @@ const formats = [
   'bullet',
   'align',
   'link',
-  'image',
 ];
 
 const styles = () =>
@@ -56,6 +48,7 @@ type Props = StateProps & DispatchProps & WithStyles<typeof styles>;
 
 const MerryEditor = ({ classes, message, onEdit }: Props) => (
   <div className={classes.testEditor}>
+    <CustomToolbar />
     <ReactQuill
       modules={modules}
       formats={formats}

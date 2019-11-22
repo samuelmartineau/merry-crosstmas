@@ -3,7 +3,7 @@ module.exports = {
   mail: {
     baseUrl:
       process.env.MERRY_CROSSTMAS_BASE_URL ||
-      'http://samuelmartineau.com/merry-crosstmas/mail/',
+      'https://santa.samuelmartineau.com/mail/',
   },
   mailgun: {
     auth: {
