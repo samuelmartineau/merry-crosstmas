@@ -4,23 +4,20 @@
   "description": "",
   "main": "./packages/merry-crosstmas-server/server.js",
   "engines": {
-    "node": ">= 8.5.0"
+    "node": ">= 12.0.0"
   },
   "scripts": {
     "install": "npm run bootstrap",
     "bootstrap": "lerna bootstrap",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:client": "cd packages/merry-crosstmas-client && npm run build",
-    "deploy:client": "git-directory-deploy --directory packages/merry-crosstmas-client/build --branch gh-pages",
-    "deliver:client": "npm run build:client && npm run deploy:client",
-    "start": "cd packages/merry-crosstmas-server && npm start"
+    "dev": "lerna run dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "git-directory-deploy": "^1.5.1",
-    "lerna": "^3.18.4"
+    "lerna": "^3.20.2"
   },
   "dependencies": {}
 }

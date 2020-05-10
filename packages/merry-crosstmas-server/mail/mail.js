@@ -1,4 +1,4 @@
-const config = require('config');
+const config = require('../config');
 const sanitizeHtml = require('sanitize-html');
 const async = require('async');
 const nodemailer = require('nodemailer');

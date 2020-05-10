@@ -1,12 +1,10 @@
 const express = require('express');
-const config = require('config');
+const config = require('./config');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const ExpressBrute = require('express-brute');
 const mailRoute = require('./mail/mail');
 
 const app = express();
-app.use(cors());
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(
   bodyParser.urlencoded({

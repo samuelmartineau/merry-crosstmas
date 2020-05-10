@@ -4,6 +4,6 @@
 
 [online demo](https://santa.samuelmartineau.com)
 
-## Deliver
+## Dev
 
-REACT_APP_API=api npm run deliver:client
+REACT_APP_API=http://localhost:5000 npm run start
