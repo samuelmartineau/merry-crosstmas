@@ -39,7 +39,7 @@
     "handlebars": "4.7.6",
     "lodash": "4.17.15",
     "nodemailer": "6.4.6",
-    "nodemailer-mailgun-transport": "2.0.0",
+    "nodemailer-mailgun-transport": "2.1.5",
     "sanitize-html": "1.23.0"
   },
   "pre-commit": [
