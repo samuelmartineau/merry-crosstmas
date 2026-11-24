@@ -2,18 +2,10 @@ const sanitizeHtml = require('sanitize-html');
 const async = require('async');
 const nodemailer = require('nodemailer');
 const mg = require('nodemailer-mailgun-transport');
-const handlebars = require('handlebars');
-const fs = require('fs');
-const path = require('path');
 const config = require('../config');
 const { isValid } = require('../request/request');
 const { getDrawing } = require('../draw/draw');
-
-const friendRe = /@friend/gi;
-const youRe = /@you/gi;
-
-const data = fs.readFileSync(path.resolve(__dirname, 'template.hbs'));
-const mailTemplate = handlebars.compile(data.toString());
+const { renderMail } = require('./render');
 
 const nodemailerMailgun = nodemailer.createTransport(mg(config.mailgun));
 
@@ -23,30 +15,29 @@ module.exports = (req, res) => {
       message: 'Invalid Parameters',
     });
   } else {
-    const { contacts, content } = req.body;
+    const { contacts, content, locale } = req.body;
     const whoToWho = getDrawing(contacts);
+    const clean = (html) => sanitizeHtml(html, config.sanitizeConfig);
+    const contentCleaned = clean(content);
 
-    const contentCleaned = sanitizeHtml(content, config.sanitizeConfig);
     // Send 10 mails at once
     async.mapLimit(
       whoToWho,
       10,
       (item, next) => {
-        const mailLocals = {
-          fromName: sanitizeHtml(item.from.name, config.sanitizeConfig),
-          toName: sanitizeHtml(item.to.name, config.sanitizeConfig),
+        const { subject, html } = renderMail({
+          locale,
+          fromName: clean(item.from.name),
+          toName: clean(item.to.name),
           content: contentCleaned,
-        };
-        const mailHTML = mailTemplate(mailLocals);
+        });
 
         nodemailerMailgun.sendMail(
           {
             from: 'Merry Crosstmas <messages-noreply@merry-crosstmas.com>',
             to: item.from.email,
-            subject: 'Secret Santa friend designation',
-            html: mailHTML
-              .replace(friendRe, mailLocals.toName)
-              .replace(youRe, mailLocals.fromName),
+            subject,
+            html,
           },
           (err, responseStatus) => {
             if (err) {
