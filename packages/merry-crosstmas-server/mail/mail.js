@@ -36,7 +36,6 @@ module.exports = (req, res) => {
           fromName: sanitizeHtml(item.from.name, config.sanitizeConfig),
           toName: sanitizeHtml(item.to.name, config.sanitizeConfig),
           content: contentCleaned,
-          baseUrl: config.mail.baseUrl,
         };
         const mailHTML = mailTemplate(mailLocals);
 
