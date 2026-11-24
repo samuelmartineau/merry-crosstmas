@@ -2,32 +2,42 @@ import { connect } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import SendIcon from '@mui/icons-material/Send';
 import { Dispatch } from 'redux';
 import { addContact } from '../store';
 import { AppState } from '../store/reducer';
+import { colors } from '../theme';
+
+export const MAX_CONTACTS = 20;
 
 type Props = StateProps & DispatchProps;
 
-const ContactActions = ({ onAdd, canAddContact }: Props) => (
-  <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+const ContactActions = ({ onAdd, canAddContact, count }: Props) => (
+  <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      mt: 2,
+    }}
+  >
     <Button
-      color="primary"
-      aria-label="add"
-      sx={{ m: 1 }}
+      variant="outlined"
+      startIcon={<AddIcon />}
       onClick={onAdd}
       disabled={!canAddContact}
+      sx={{ py: 1.1, px: 2.25, fontSize: 14 }}
     >
-      <AddIcon />
+      Add a friend
     </Button>
-    <Button color="secondary" aria-label="edit" type="submit" sx={{ m: 1 }}>
-      <SendIcon />
-    </Button>
+    <Box component="span" sx={{ fontSize: 13, color: colors.muted }}>
+      {count} of {MAX_CONTACTS}
+    </Box>
   </Box>
 );
 
 const mapStateToProps = (state: AppState) => ({
-  canAddContact: state.contacts.all.length < 20,
+  count: state.contacts.all.length,
+  canAddContact: state.contacts.all.length < MAX_CONTACTS,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;

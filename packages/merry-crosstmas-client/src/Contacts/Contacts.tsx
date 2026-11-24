@@ -8,25 +8,34 @@ import { UnknownAction } from 'redux';
 import { toggleSettings, send } from '../store';
 import ContactCard from './ContactCard';
 import ContactActions from './ContactActions';
+import Panel from '../Panel/Panel';
 import { AppState } from '../store/reducer';
 import { ThunkExtraArgument } from '../api';
+
+export const FORM_ID = 'secret-santa-form';
 
 type Props = StateProps & DispatchProps;
 
 const Contacts = ({ contacts, swithMode, customMode, onSend }: Props) => (
-  <Box
-    component="form"
-    sx={{ overflow: 'hidden' }}
-    onSubmit={onSend}
-    autoComplete="off"
-    role="presentation"
+  <Panel
+    icon="👥"
+    title="Who's playing?"
+    action={
+      <FormControlLabel
+        sx={{ m: 0, '& .MuiFormControlLabel-label': { fontSize: 14, fontWeight: 500 } }}
+        control={<Switch checked={customMode} onChange={swithMode} />}
+        label="Exclusions"
+      />
+    }
+    hint="Add at least 3 friends. Turn on exclusions to stop couples drawing each other."
   >
-    <FormControlLabel
-      sx={{ margin: 0 }}
-      control={<Switch checked={customMode} onChange={swithMode} />}
-      label="Custom Mode (ie: exclusions)"
-    />
-    <Box sx={{ flexDirection: 'column' }}>
+    <Box
+      component="form"
+      id={FORM_ID}
+      onSubmit={onSend}
+      autoComplete="off"
+      sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.25, md: 2 }, pt: 0.5 }}
+    >
       {contacts.map((contact) => (
         <ContactCard
           isRemovable={contacts.length > 3}
@@ -36,7 +45,7 @@ const Contacts = ({ contacts, swithMode, customMode, onSend }: Props) => (
       ))}
     </Box>
     <ContactActions />
-  </Box>
+  </Panel>
 );
 
 const mapStateToProps = (state: AppState) => ({

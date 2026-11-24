@@ -1,39 +1,64 @@
 import { connect } from 'react-redux';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import fontColorContrast from 'font-color-contrast';
+import ButtonBase from '@mui/material/ButtonBase';
 import { Dispatch } from 'redux';
-import { getForbiddenById, toggleForbidden } from '../store';
+import Avatar from './Avatar';
+import { getContactById, getForbiddenById, toggleForbidden } from '../store';
 import { AppState } from '../store/reducer';
+import { colors } from '../theme';
 
 type Props = StateProps & DispatchProps;
 
-const ContactForbidden = ({ forbidden, onToggle, onlyOne }: Props) => (
-  <Box component="section" sx={{ m: 1 }}>
-    <p>Toggle name to disable ability to be drawn</p>
-    <Box component="article" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-      {forbidden.map((item) => (
-        <Button
+const ContactForbidden = ({ name, forbidden, onToggle, onlyOne }: Props) => (
+  <Box
+    component="section"
+    sx={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: 1,
+      mt: 1.5,
+      ml: { xs: 0, md: '50px' },
+      pt: 1.5,
+      borderTop: `1px dashed ${colors.line2}`,
+    }}
+  >
+    <Box component="span" sx={{ fontSize: 13, color: colors.muted, mr: 0.5 }}>
+      {name.trim() || 'This friend'} can draw
+    </Box>
+    {forbidden.map((item, index) => {
+      const label = item.name.trim() || `Friend ${index + 1}`;
+      return (
+        <ButtonBase
           key={item.id}
-          sx={{ margin: '0.2em' }}
           disabled={onlyOne && !item.isForbidden}
           onClick={onToggle(item.id)}
-          style={
-            item.isForbidden
-              ? {
-                  color: 'grey',
-                }
-              : {
-                  background: item.color,
-                  color: fontColorContrast(item.color),
-                  opacity: 0.5,
-                }
-          }
+          aria-pressed={!item.isForbidden}
+          title={item.isForbidden ? `Allow drawing ${label}` : `Never draw ${label}`}
+          sx={{
+            gap: 0.75,
+            borderRadius: 999,
+            p: '5px 12px 5px 5px',
+            fontSize: 13,
+            fontWeight: 500,
+            border: `1.5px solid ${colors.line2}`,
+            background: '#fff',
+            color: colors.ink,
+            ...(item.isForbidden && {
+              background: colors.paper,
+              color: '#b3a596',
+              textDecoration: 'line-through',
+              borderStyle: 'dashed',
+              '& > span:first-of-type': { opacity: 0.4 },
+            }),
+            '&.Mui-disabled': { opacity: 0.6 },
+          }}
         >
-          {item.name}
-        </Button>
-      ))}
-    </Box>
+          <Avatar name={label} color={item.color} size={20} />
+          {label}
+        </ButtonBase>
+      );
+    })}
   </Box>
 );
 
@@ -44,6 +69,7 @@ type OwnProps = {
 const mapStateToProps = (state: AppState, { contactId }: OwnProps) => {
   const forbidden = getForbiddenById(state, contactId);
   return {
+    name: getContactById(state, contactId).name,
     forbidden,
     onlyOne: forbidden.filter((f) => !f.isForbidden).length === 1,
   };

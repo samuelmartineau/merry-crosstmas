@@ -5,10 +5,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Dispatch } from 'redux';
 import { closeNotification } from '../store';
 import { AppState } from '../store/reducer';
+import { colors } from '../theme';
 
 const backgrounds = {
-  error: 'red',
-  success: 'green',
+  error: colors.red,
+  success: colors.green,
 };
 
 type NotificationsProps = StateProps & DispatchProps;
@@ -23,14 +24,14 @@ const Notifications = ({
   return (
     <Snackbar
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
+        vertical: 'top',
+        horizontal: 'center',
       }}
       open={show}
       slotProps={{
         content: {
           'aria-describedby': 'message-id',
-          sx: { background: backgrounds[kind] },
+          sx: { background: backgrounds[kind], borderRadius: '12px' },
         },
       }}
       message={<span id="message-id">{message}</span>}

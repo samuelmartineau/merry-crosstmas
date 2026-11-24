@@ -1,47 +1,68 @@
 import Box from '@mui/material/Box';
-
-const styles = {
-  header: {
-    textAlign: 'center',
-    margin: '2em 0',
-  },
-  headerIcon: {
-    verticalAlign: 'middle',
-    height: 'auto',
-    width: '3rem',
-    padding: '0.2em',
-  },
-  headerTitle: {
-    fontSize: '3rem',
-    margin: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerLinetag: {
-    fontWeight: 700,
-    margin: '.5em 0',
-  },
-} as const;
+import { candyStripe, colors, eyebrow, serif } from '../theme';
 
 const Header = () => (
-  <Box component="header" sx={styles.header}>
-    <Box component="h1" sx={styles.headerTitle}>
+  <Box component="header">
+    <Box sx={{ background: colors.red, color: '#fff' }}>
       <Box
-        component="svg"
-        sx={styles.headerIcon}
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
+        sx={{
+          maxWidth: 1180,
+          mx: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1.5,
+          px: { xs: 2, md: 3 },
+          py: { xs: 1.5, md: 1.75 },
+        }}
       >
-        <path d="M5.203 3.758q-0.469 0.719-1.070 2.133-0.172-0.352-0.289-0.566t-0.316-0.496-0.398-0.441-0.492-0.273-0.637-0.113h-1.75q-0.109 0-0.18-0.070t-0.070-0.18v-1.5q0-0.109 0.070-0.18t0.18-0.070h1.75q1.953 0 3.203 1.758zM14 10q0 0.109-0.070 0.18l-2.5 2.5q-0.070 0.070-0.18 0.070-0.102 0-0.176-0.074t-0.074-0.176v-1.5q-0.25 0-0.664 0.004t-0.633 0.008-0.57-0.008-0.555-0.039-0.5-0.082-0.492-0.145-0.453-0.223-0.461-0.312-0.43-0.418-0.438-0.543q0.461-0.727 1.062-2.133 0.172 0.352 0.289 0.566t0.316 0.496 0.398 0.441 0.492 0.273 0.637 0.113h2v-1.5q0-0.109 0.070-0.18t0.18-0.070q0.094 0 0.187 0.078l2.492 2.492q0.070 0.070 0.070 0.18zM14 3q0 0.109-0.070 0.18l-2.5 2.5q-0.070 0.070-0.18 0.070-0.102 0-0.176-0.074t-0.074-0.176v-1.5h-2q-0.375 0-0.68 0.117t-0.539 0.352-0.398 0.48-0.352 0.605q-0.25 0.484-0.609 1.336-0.227 0.516-0.387 0.867t-0.422 0.82-0.5 0.781-0.578 0.648-0.703 0.535-0.832 0.328-1 0.129h-1.75q-0.109 0-0.18-0.070t-0.070-0.18v-1.5q0-0.109 0.070-0.18t0.18-0.070h1.75q0.375 0 0.68-0.117t0.539-0.352 0.398-0.48 0.352-0.605q0.25-0.484 0.609-1.336 0.227-0.516 0.387-0.867t0.422-0.82 0.5-0.781 0.578-0.648 0.703-0.535 0.832-0.328 1-0.129h2v-1.5q0-0.109 0.070-0.18t0.18-0.070q0.094 0 0.187 0.078l2.492 2.492q0.070 0.070 0.070 0.18z" />
+        <Box component="span" aria-hidden sx={{ fontSize: 28, lineHeight: 1 }}>
+          🎅
+        </Box>
+        <Box>
+          <Box sx={{ fontFamily: serif, fontWeight: 700, fontSize: 22, lineHeight: 1.1 }}>
+            Secret Santa
+          </Box>
+          <Box sx={{ ...eyebrow, fontSize: 10, color: colors.redSoft }}>
+            Merry Crosstmas
+          </Box>
+        </Box>
       </Box>
-      <span>Merry Crosstmas</span>
     </Box>
-    <Box component="p" sx={styles.headerLinetag}>
-      Receive an email to organize a Secret Santa with your friends
+    <Box sx={{ height: 10, background: candyStripe }} />
+    <Box
+      sx={{
+        maxWidth: 1180,
+        mx: 'auto',
+        px: { xs: 2, md: 3 },
+        pt: { xs: 3.5, md: 5.5 },
+      }}
+    >
+      <Box sx={{ ...eyebrow, fontSize: { xs: 10, md: 12 }, letterSpacing: { xs: '2px', md: '3px' } }}>
+        Free · no sign-up · emails in one click
+      </Box>
+      <Box
+        component="h1"
+        sx={{
+          m: '6px 0 0',
+          fontFamily: serif,
+          fontWeight: 700,
+          color: colors.green,
+          fontSize: { xs: 34, md: 52 },
+          lineHeight: { xs: '40px', md: '58px' },
+        }}
+      >
+        Draw names.
+        <br />
+        Send surprises.{' '}
+        <span aria-hidden>🎁</span>
+      </Box>
+      <Box
+        component="p"
+        sx={{ m: '10px 0 0', color: colors.muted, fontSize: { xs: 15, md: 17 } }}
+      >
+        Everyone gets an email with their secret match. Even you won't know who
+        has who.
+      </Box>
     </Box>
   </Box>
 );

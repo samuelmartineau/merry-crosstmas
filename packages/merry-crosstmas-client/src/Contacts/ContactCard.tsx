@@ -1,17 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Color from 'color';
+import CloseIcon from '@mui/icons-material/Close';
 import { Dispatch } from 'redux';
 import ContactForbidden from './ContactForbidden';
+import Avatar from './Avatar';
 import { getContactById, addChar, removeContact } from '../store';
 import { AppState } from '../store/reducer';
-
-const textFieldSx = { mx: 1, flexGrow: 1 };
+import { colors } from '../theme';
 
 type Props = {
   isRemovable: boolean;
@@ -25,57 +23,53 @@ const ContactCard = ({
   isRemovable,
   customMode,
 }: Props) => (
-  <Paper
+  <Box
     sx={{
-      position: 'relative',
-      margin: '1em auto',
-      '&:after': {
-        content: '" "',
-        display: 'table',
-      },
+      background: { xs: colors.paper, md: customMode ? colors.paper : 'transparent' },
+      border: '1px solid',
+      borderColor: { xs: colors.line, md: customMode ? colors.line : 'transparent' },
+      borderRadius: '14px',
+      p: { xs: 1.25, md: customMode ? 1.25 : 0 },
     }}
   >
-    {isRemovable && (
-      <IconButton
-        sx={{ m: 1, position: 'absolute', right: 0, zIndex: 1 }}
-        aria-label="Delete"
-        onClick={onRemove}
-      >
-        <DeleteIcon />
-      </IconButton>
-    )}
     <Box
-      sx={{ display: 'flex', flexWrap: 'wrap' }}
-      style={{
-        background: Color(contact.color).fade(0.5).string(),
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: { xs: 'wrap', md: 'nowrap' },
+        gap: 1.25,
       }}
     >
+      <Avatar name={contact.name} color={contact.color} />
       <TextField
-        variant="standard"
         label="Name"
-        placeholder="Toto"
-        sx={textFieldSx}
+        placeholder="Alice"
+        sx={{ flex: { xs: '1 1 calc(100% - 100px)', md: '0 0 30%' } }}
         name={`name-${contact.id}`}
-        margin="normal"
         value={contact.name}
         onChange={onChar('name')}
         required
       />
       <TextField
-        variant="standard"
         label="Email"
-        placeholder="toto@gmail.com"
-        sx={textFieldSx}
-        margin="normal"
+        placeholder="alice@example.com"
+        sx={{ flex: { xs: '1 1 100%', md: '1 1 auto' }, order: { xs: 4, md: 0 } }}
         name={`email-${contact.id}`}
         type="email"
         value={contact.email}
         onChange={onChar('email')}
         required
       />
+      {isRemovable ? (
+        <IconButton aria-label="Delete" onClick={onRemove} sx={{ color: colors.faint }}>
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      ) : (
+        <Box sx={{ width: 40, flex: 'none' }} />
+      )}
     </Box>
     {customMode && <ContactForbidden contactId={contact.id} />}
-  </Paper>
+  </Box>
 );
 
 type OwnProps = {
