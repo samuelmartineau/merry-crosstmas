@@ -1,30 +1,15 @@
 // thumb up
-import React from 'react';
-import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { WithStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import { reset } from '../store';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
 import { Dispatch } from 'redux';
+import { reset } from '../store';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    success: {
-      padding: '1em',
-      textAlign: 'center',
-      color: 'green',
-    },
-    button: {
-      margin: theme.spacing(),
-    },
-  });
+type Props = DispatchProps;
 
-type Props = DispatchProps & WithStyles<typeof styles>;
-
-const Success = ({ classes, onReset }: Props) => (
-  <Paper className={classes.success}>
+const Success = ({ onReset }: Props) => (
+  <Paper sx={{ padding: '1em', textAlign: 'center', color: 'green' }}>
     <ThumbUpIcon
       style={{
         width: 100,
@@ -32,7 +17,7 @@ const Success = ({ classes, onReset }: Props) => (
       }}
     />
     <h2>Mails sent with success</h2>
-    <Button onClick={onReset} color="primary" className={classes.button}>
+    <Button onClick={onReset} color="primary" sx={{ m: 1 }}>
       Manage another secret santa
     </Button>
   </Paper>
@@ -46,4 +31,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Success));
+export default connect(null, mapDispatchToProps)(Success);

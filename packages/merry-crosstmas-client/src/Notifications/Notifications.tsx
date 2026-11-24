@@ -1,36 +1,21 @@
-import React from 'react';
-import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import { closeNotification } from '../store';
-import { WithStyles } from '@material-ui/styles';
-import { AppState } from '../store/reducer';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import { Dispatch } from 'redux';
+import { closeNotification } from '../store';
+import { AppState } from '../store/reducer';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    close: {
-      width: theme.spacing() * 4,
-      height: theme.spacing() * 4,
-    },
-    error: {
-      background: 'red',
-    },
-    success: {
-      background: 'green',
-    },
-  });
+const backgrounds = {
+  error: 'red',
+  success: 'green',
+};
 
-type NotificationsProps = StateProps &
-  DispatchProps &
-  WithStyles<typeof styles>;
+type NotificationsProps = StateProps & DispatchProps;
 
 const Notifications = ({
   show,
   message,
-  classes,
   onClose,
   kind,
 }: NotificationsProps) => {
@@ -42,24 +27,23 @@ const Notifications = ({
         horizontal: 'left',
       }}
       open={show}
-      ContentProps={{
-        'aria-describedby': 'message-id',
-        classes: {
-          root: classes[kind],
+      slotProps={{
+        content: {
+          'aria-describedby': 'message-id',
+          sx: { background: backgrounds[kind] },
         },
       }}
       message={<span id="message-id">{message}</span>}
-      action={[
+      action={
         <IconButton
-          key="close"
           aria-label="Close"
           color="inherit"
-          className={classes.close}
+          sx={{ width: 32, height: 32 }}
           onClick={onClose}
         >
           <CloseIcon />
-        </IconButton>,
-      ]}
+        </IconButton>
+      }
     />
   );
 };
@@ -78,7 +62,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(Notifications));
+export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

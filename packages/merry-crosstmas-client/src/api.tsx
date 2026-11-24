@@ -1,8 +1,8 @@
 import { Contact } from './Contacts/Contacts.reducer';
 
-const apiBase = process.env.REACT_APP_API || '';
+const apiBase = import.meta.env.REACT_APP_API || '';
 
-interface TypedResponse<T = any> extends Response {
+interface TypedResponse<T = unknown> extends Response {
   /**
    * this will override `json` method from `Body` that is extended by `Response`
    * interface Body {
@@ -34,3 +34,5 @@ export function sendMails(contacts: Omit<Contact, 'color'>[], content: string) {
 export default sendMails;
 
 export type SendMails = typeof sendMails;
+
+export type ThunkExtraArgument = { sendMails: SendMails };

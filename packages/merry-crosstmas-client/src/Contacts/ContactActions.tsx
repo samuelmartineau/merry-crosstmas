@@ -1,47 +1,29 @@
-import React from 'react';
-import { WithStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import SendIcon from '@material-ui/icons/Send';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import SendIcon from '@mui/icons-material/Send';
+import { Dispatch } from 'redux';
 import { addContact } from '../store';
 import { AppState } from '../store/reducer';
-import { Dispatch } from 'redux';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      justifyContent: 'space-around',
-    },
-    button: {
-      margin: theme.spacing(),
-    },
-  });
+type Props = StateProps & DispatchProps;
 
-type Props = StateProps & DispatchProps & WithStyles<typeof styles>;
-
-const ContactActions = ({ classes, onAdd, canAddContact }: Props) => (
-  <div className={classes.root}>
+const ContactActions = ({ onAdd, canAddContact }: Props) => (
+  <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
     <Button
       color="primary"
       aria-label="add"
-      className={classes.button}
+      sx={{ m: 1 }}
       onClick={onAdd}
       disabled={!canAddContact}
     >
       <AddIcon />
     </Button>
-    <Button
-      color="secondary"
-      aria-label="edit"
-      type="submit"
-      className={classes.button}
-    >
+    <Button color="secondary" aria-label="edit" type="submit" sx={{ m: 1 }}>
       <SendIcon />
     </Button>
-  </div>
+  </Box>
 );
 
 const mapStateToProps = (state: AppState) => ({
@@ -58,7 +40,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(ContactActions));
+export default connect(mapStateToProps, mapDispatchToProps)(ContactActions);

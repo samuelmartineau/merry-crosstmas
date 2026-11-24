@@ -69,7 +69,7 @@ export const mapReducer = (
       };
     }
     case REMOVE_CONTACT: {
-      const { [action.id]: id, ...rest } = state;
+      const { [action.id]: _removed, ...rest } = state; // eslint-disable-line @typescript-eslint/no-unused-vars
       return rest;
     }
     case TOGGLE_FORBIDDEN: {

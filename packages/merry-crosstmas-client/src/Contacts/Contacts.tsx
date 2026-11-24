@@ -1,63 +1,43 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import { toggleSettings, send } from '../store';
-import ContactCard from '../Contacts/ContactCard';
-import ContactActions from '../Contacts/ContactActions';
-import { WithStyles } from '@material-ui/styles';
-import { AppState } from '../store/reducer';
+import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import { ThunkDispatch } from 'redux-thunk';
+import { UnknownAction } from 'redux';
+import { toggleSettings, send } from '../store';
+import ContactCard from './ContactCard';
+import ContactActions from './ContactActions';
+import { AppState } from '../store/reducer';
+import { ThunkExtraArgument } from '../api';
 
-const styles = () =>
-  createStyles({
-    root: {
-      flexDirection: 'column',
-    },
-    switchRoot: {
-      margin: 0,
-    },
-    form: {
-      overflow: 'hidden',
-    },
-  });
+type Props = StateProps & DispatchProps;
 
-type Props = StateProps & DispatchProps & WithStyles<typeof styles>;
-
-const Contacts = ({
-  contacts,
-  classes,
-  swithMode,
-  customMode,
-  onSend,
-}: Props) => {
-
-  return (
-    <form
-      className={classes.form}
-      onSubmit={onSend}
-      autoComplete="off"
-      role="presentation"
-    >
-      <FormControlLabel
-        className={classes.switchRoot}
-        control={<Switch checked={customMode} onChange={swithMode} />}
-        label="Custom Mode (ie: exclusions)"
-      />
-      <div className={classes.root}>
-        {contacts.map((contact) => (
-          <ContactCard
-            isRemovable={contacts.length > 3}
-            contactId={contact}
-            key={contact}
-          />
-        ))}
-      </div>
-      <ContactActions />
-    </form>
-  )
-};
+const Contacts = ({ contacts, swithMode, customMode, onSend }: Props) => (
+  <Box
+    component="form"
+    sx={{ overflow: 'hidden' }}
+    onSubmit={onSend}
+    autoComplete="off"
+    role="presentation"
+  >
+    <FormControlLabel
+      sx={{ margin: 0 }}
+      control={<Switch checked={customMode} onChange={swithMode} />}
+      label="Custom Mode (ie: exclusions)"
+    />
+    <Box sx={{ flexDirection: 'column' }}>
+      {contacts.map((contact) => (
+        <ContactCard
+          isRemovable={contacts.length > 3}
+          contactId={contact}
+          key={contact}
+        />
+      ))}
+    </Box>
+    <ContactActions />
+  </Box>
+);
 
 const mapStateToProps = (state: AppState) => ({
   customMode: state.contacts.customMode,
@@ -66,7 +46,9 @@ const mapStateToProps = (state: AppState) => ({
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<AppState, ThunkExtraArgument, UnknownAction>,
+) => ({
   swithMode() {
     dispatch(toggleSettings());
   },
@@ -78,7 +60,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
 
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(Contacts));
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

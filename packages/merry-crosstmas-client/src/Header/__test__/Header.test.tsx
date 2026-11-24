@@ -1,8 +1,12 @@
-import React from "react";
-import renderer from "react-test-renderer";
-import Header from "../Header";
+import { render, screen } from '@testing-library/react';
+import Header from '../Header';
 
-test("Header renders correctly", () => {
-  const tree = renderer.create(<Header />).toJSON();
-  expect(tree).toMatchSnapshot();
+test('Header renders the title and tagline', () => {
+  render(<Header />);
+  expect(
+    screen.getByRole('heading', { level: 1, name: 'Merry Crosstmas' }),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/organize a Secret Santa with your friends/),
+  ).toBeInTheDocument();
 });

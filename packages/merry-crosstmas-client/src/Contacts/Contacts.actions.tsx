@@ -71,7 +71,7 @@ export const reset = () =>
 export function send(contactsMap: MapState, message: string) {
   return async (
     dispatch: Dispatch,
-    _: any,
+    _: unknown,
     { sendMails }: { sendMails: SendMails },
   ) => {
     const contacts = Object.values(contactsMap);
@@ -94,7 +94,9 @@ export function send(contactsMap: MapState, message: string) {
         dispatch(mailSuccess());
       } catch (e) {
         dispatch(mailError());
-        dispatch(setNotification('error', e.message));
+        dispatch(
+          setNotification('error', e instanceof Error ? e.message : String(e)),
+        );
       }
     }
   };

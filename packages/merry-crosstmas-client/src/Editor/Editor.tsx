@@ -1,23 +1,24 @@
-import React from 'react';
-import ReactQuill, { Quill } from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill-new';
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import { edit } from '../store';
-import 'react-quill/dist/quill.snow.css';
-import { WithStyles, createStyles } from '@material-ui/styles';
+import Box from '@mui/material/Box';
 import { Dispatch } from 'redux';
+import 'react-quill-new/dist/quill.snow.css';
+import { edit } from '../store';
 import { AppState } from '../store/reducer';
 import CustomToolbar from './CustomToolbar';
 
+type StyleAttributor = { whitelist: string[] | undefined };
+
+// Use inline styles (not classes) so the formatting survives in the email.
 const BackgroundClass = Quill.import('attributors/style/background');
 const ColorClass = Quill.import('attributors/style/color');
-const SizeStyle = Quill.import('attributors/style/size');
+const SizeStyle = Quill.import('attributors/style/size') as StyleAttributor;
 const AlignStyle = Quill.import('attributors/style/align');
-SizeStyle.whitelist.push('50px');
-Quill.register(BackgroundClass, true);
-Quill.register(ColorClass, true);
-Quill.register(SizeStyle, true);
-Quill.register(AlignStyle, true);
+SizeStyle.whitelist = ['10px', '18px', '32px', '50px'];
+Quill.register('formats/background', BackgroundClass, true);
+Quill.register('formats/color', ColorClass, true);
+Quill.register('formats/size', SizeStyle, true);
+Quill.register('formats/align', AlignStyle, true);
 
 const modules = {
   toolbar: '#toolbar',
@@ -32,22 +33,14 @@ const formats = [
   'color',
   'background',
   'list',
-  'bullet',
   'align',
   'link',
 ];
 
-const styles = () =>
-  createStyles({
-    testEditor: {
-      background: 'white',
-    },
-  });
+type Props = StateProps & DispatchProps;
 
-type Props = StateProps & DispatchProps & WithStyles<typeof styles>;
-
-const MerryEditor = ({ classes, message, onEdit }: Props) => (
-  <div className={classes.testEditor}>
+const MerryEditor = ({ message, onEdit }: Props) => (
+  <Box sx={{ background: 'white' }}>
     <CustomToolbar />
     <ReactQuill
       modules={modules}
@@ -55,7 +48,7 @@ const MerryEditor = ({ classes, message, onEdit }: Props) => (
       value={message}
       onChange={onEdit}
     />
-  </div>
+  </Box>
 );
 
 const mapStateToProps = (state: AppState) => ({
@@ -72,7 +65,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(MerryEditor));
+export default connect(mapStateToProps, mapDispatchToProps)(MerryEditor);
