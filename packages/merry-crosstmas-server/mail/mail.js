@@ -1,55 +1,64 @@
 const sanitizeHtml = require('sanitize-html');
 const async = require('async');
-const nodemailer = require('nodemailer');
-const mg = require('nodemailer-mailgun-transport');
 const config = require('../config');
 const { isValid } = require('../request/request');
 const { getDrawing } = require('../draw/draw');
-const { renderMail } = require('./render');
+const { resolveLocale } = require('./locales');
+const { sendDrawMail } = require('./send');
+const { createDrawLog } = require('./drawLog');
 
-const nodemailerMailgun = nodemailer.createTransport(mg(config.mailgun));
-
-module.exports = (req, res) => {
-  if (!isValid(req.body)) {
-    res.status(400).send({
-      message: 'Invalid Parameters',
-    });
-  } else {
-    const { contacts, content, locale } = req.body;
+function createMailRoute({ send = sendDrawMail, drawLog = createDrawLog() } = {}) {
+  return (req, res) => {
+    if (!isValid(req.body)) {
+      res.status(400).send({
+        message: 'Invalid Parameters',
+      });
+      return;
+    }
+    const { contacts, content } = req.body;
+    const locale = resolveLocale(req.body.locale);
     const whoToWho = getDrawing(contacts);
     const clean = (html) => sanitizeHtml(html, config.sanitizeConfig);
     const contentCleaned = clean(content);
 
-    // Send 10 mails at once
+    // Send 10 mails at once. Every person is attempted so the draw log
+    // records exactly who received their email and who did not.
     async.mapLimit(
       whoToWho,
       10,
       (item, next) => {
-        const { subject, html } = renderMail({
-          locale,
+        const assignment = {
           fromName: clean(item.from.name),
+          fromEmail: item.from.email,
           toName: clean(item.to.name),
+          toEmail: item.to.email,
+        };
+        send({
+          locale,
+          fromName: assignment.fromName,
+          toName: assignment.toName,
           content: contentCleaned,
-        });
-
-        nodemailerMailgun.sendMail(
-          {
-            from: 'Merry Crosstmas <messages-noreply@merry-crosstmas.com>',
-            to: item.from.email,
-            subject,
-            html,
-          },
-          (err, responseStatus) => {
-            if (err) {
-              return next(err);
-            }
-            return next(null, responseStatus.message);
+          email: assignment.fromEmail,
+        }).then(
+          messageId => next(null, { ...assignment, status: 'accepted', messageId }),
+          err => {
+            console.error('error sending mail to', assignment.fromEmail, err);
+            next(null, { ...assignment, status: 'failed', error: String(err && err.message ? err.message : err) });
           },
         );
       },
-      err => {
-        if (err) {
-          console.error('error sending mail', err);
+      (err, assignments) => {
+        let drawId = null;
+        try {
+          const entry = drawLog.logDraw({ locale, content: contentCleaned, assignments });
+          drawId = entry ? entry.id : null;
+          if (drawId) console.log('draw logged', drawId);
+        } catch (logErr) {
+          console.error('could not write draw log', logErr);
+        }
+        const failed = assignments.filter(a => a.status === 'failed').length;
+        if (failed > 0) {
+          console.error(`draw ${drawId}: ${failed}/${assignments.length} emails failed`);
           res.status(500).send({
             message: 'Email sending error',
           });
@@ -60,5 +69,8 @@ module.exports = (req, res) => {
         });
       },
     );
-  }
-};
+  };
+}
+
+module.exports = createMailRoute();
+module.exports.createMailRoute = createMailRoute;
