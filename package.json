@@ -4,20 +4,17 @@
   "description": "",
   "main": "./packages/merry-crosstmas-server/server.js",
   "engines": {
-    "node": ">= 12.0.0"
+    "node": ">= 22.12.0"
   },
   "scripts": {
-    "install": "npm run bootstrap",
-    "bootstrap": "lerna bootstrap",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "install:all": "cd packages/merry-crosstmas-server && npm ci && cd ../merry-crosstmas-client && npm ci",
+    "test": "cd packages/merry-crosstmas-server && npm test && cd ../merry-crosstmas-client && npm test",
     "build:client": "cd packages/merry-crosstmas-client && npm run build",
-    "dev": "lerna run dev"
+    "dev:server": "cd packages/merry-crosstmas-server && npm run dev",
+    "dev:client": "cd packages/merry-crosstmas-client && npm run dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "lerna": "^3.20.2"
-  },
   "dependencies": {}
 }
