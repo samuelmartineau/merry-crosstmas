@@ -6,7 +6,7 @@
 
 ## Dev
 
-Requires Node.js >= 22.12.
+Requires Node.js 26 (current Active LTS, see `.nvmrc`). With nvm: `nvm install && nvm use`.
 
 ```sh
 npm run install:all   # npm ci in the server and client packages

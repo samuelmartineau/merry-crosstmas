@@ -4,7 +4,7 @@
   "description": "",
   "main": "./packages/merry-crosstmas-server/server.js",
   "engines": {
-    "node": ">= 22.12.0"
+    "node": ">=26"
   },
   "scripts": {
     "install:all": "cd packages/merry-crosstmas-server && npm ci && cd ../merry-crosstmas-client && npm ci",
