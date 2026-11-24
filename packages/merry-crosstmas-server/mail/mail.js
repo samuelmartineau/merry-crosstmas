@@ -1,4 +1,3 @@
-const config = require('../config');
 const sanitizeHtml = require('sanitize-html');
 const async = require('async');
 const nodemailer = require('nodemailer');
@@ -6,6 +5,7 @@ const mg = require('nodemailer-mailgun-transport');
 const handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
+const config = require('../config');
 const { isValid } = require('../request/request');
 const { getDrawing } = require('../draw/draw');
 
@@ -63,6 +63,7 @@ module.exports = (req, res) => {
           res.status(500).send({
             message: 'Email sending error',
           });
+          return;
         }
         res.send({
           message: `Succesfully sent ${whoToWho.length} messages`,

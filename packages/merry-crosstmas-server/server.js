@@ -1,19 +1,23 @@
 const express = require('express');
+const { rateLimit } = require('express-rate-limit');
 const config = require('./config');
-const bodyParser = require('body-parser');
-const ExpressBrute = require('express-brute');
 const mailRoute = require('./mail/mail');
 
 const app = express();
-app.use(bodyParser.json()); // support json encoded bodies
+app.use(express.json()); // support json encoded bodies
 app.use(
-  bodyParser.urlencoded({
+  express.urlencoded({
     extended: true,
   }),
 ); // support encoded bodies
 
-const store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
-const bruteforce = new ExpressBrute(store);
+// error 429 if the send route is hit too often (in-memory store)
+const sendLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+});
 
 app.get('/', (req, res) => {
   res.redirect(301, 'http://samuelmartineau.com/projects/merry-crosstmas/');
@@ -27,7 +31,7 @@ app.get('/test', (req, res) => {
 
 app.post(
   '/send',
-  bruteforce.prevent, // error 429 if we hit this route too often
+  sendLimiter,
   mailRoute,
 );
 
