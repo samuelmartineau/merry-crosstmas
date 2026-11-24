@@ -6,6 +6,7 @@ import { Dispatch } from 'redux';
 import { closeNotification } from '../store';
 import { AppState } from '../store/reducer';
 import { colors } from '../theme';
+import { useT } from '../i18n/useT';
 
 const backgrounds = {
   error: colors.red,
@@ -20,6 +21,7 @@ const Notifications = ({
   onClose,
   kind,
 }: NotificationsProps) => {
+  const t = useT();
   if (!kind) return null;
   return (
     <Snackbar
@@ -37,7 +39,7 @@ const Notifications = ({
       message={<span id="message-id">{message}</span>}
       action={
         <IconButton
-          aria-label="Close"
+          aria-label={t.close}
           color="inherit"
           sx={{ width: 32, height: 32 }}
           onClick={onClose}

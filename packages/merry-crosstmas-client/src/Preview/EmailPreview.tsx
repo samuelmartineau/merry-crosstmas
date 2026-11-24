@@ -3,13 +3,17 @@ import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import { AppState } from '../store/reducer';
 import { candyStripe, colors, eyebrow, sans, serif } from '../theme';
+import { useT } from '../i18n/useT';
 
 export const PREVIEW_ID = 'email-preview';
 
 const escapeHtml = (value: string) =>
   value.replace(
     /[&<>"']/g,
-    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!,
+    (c) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[
+        c
+      ]!,
   );
 
 // Same substitution the server does in mail/mail.js.
@@ -22,12 +26,13 @@ const selectPeople = (state: AppState) => state.contacts;
 
 const EmailPreview = () => {
   const { all, map } = useSelector(selectPeople);
-  const message = useSelector((state: AppState) => state.editor);
+  const message = useSelector((state: AppState) => state.editor.message);
   const [giverId, setGiverId] = useState<number | null>(null);
+  const t = useT();
 
   const people = all.map((id, index) => ({
     ...map[id],
-    label: map[id].name.trim() || `Friend ${index + 1}`,
+    label: map[id].name.trim() || t.contacts.friendN(index + 1),
   }));
   const giverIndex = Math.max(
     0,
@@ -56,11 +61,11 @@ const EmailPreview = () => {
         }}
       >
         <Box component="span" sx={eyebrow}>
-          Live preview
+          {t.preview.label}
         </Box>
         <Box
           component="select"
-          aria-label="Preview the email received by"
+          aria-label={t.preview.selectLabel}
           value={giver.id}
           onChange={(e) => setGiverId(Number(e.target.value))}
           sx={{
@@ -75,7 +80,7 @@ const EmailPreview = () => {
         >
           {people.map((p) => (
             <option key={p.id} value={p.id}>
-              As seen by {p.label}
+              {t.preview.seenBy(p.label)}
             </option>
           ))}
         </Box>
@@ -89,17 +94,26 @@ const EmailPreview = () => {
         }}
       >
         <Box sx={{ height: 10, background: candyStripe }} />
-        <Box sx={{ background: colors.red, color: '#fff', textAlign: 'center', p: 2 }}>
+        <Box
+          sx={{
+            background: colors.red,
+            color: '#fff',
+            textAlign: 'center',
+            p: 2,
+          }}
+        >
           <Box sx={{ fontFamily: serif, fontWeight: 700, fontSize: 22 }}>
             🎅 Secret Santa 🎄
           </Box>
-          <Box sx={{ ...eyebrow, fontSize: 10, color: colors.redSoft, mt: 0.25 }}>
+          <Box
+            sx={{ ...eyebrow, fontSize: 10, color: colors.redSoft, mt: 0.25 }}
+          >
             Merry Crosstmas
           </Box>
         </Box>
         <Box sx={{ textAlign: 'center', p: '22px 20px 4px' }}>
           <Box sx={{ ...eyebrow, fontSize: 10, letterSpacing: '2px' }}>
-            Your secret friend is
+            {t.email.revealLabel}
           </Box>
           <Box
             sx={{
@@ -152,17 +166,22 @@ const EmailPreview = () => {
               fontWeight: 700,
             }}
           >
-            🎁 Organize your own Secret Santa
+            🎁 {t.email.cta}
           </Box>
         </Box>
         <Box sx={{ height: 6, background: candyStripe }} />
       </Box>
       <Box
         component="p"
-        sx={{ textAlign: 'center', color: colors.faint, fontSize: 12, mt: 1.25, mb: 0 }}
+        sx={{
+          textAlign: 'center',
+          color: colors.faint,
+          fontSize: 12,
+          mt: 1.25,
+          mb: 0,
+        }}
       >
-        Sample match only. Names are drawn randomly when you send, and nobody
-        sees the result.
+        {t.preview.note}
       </Box>
     </Box>
   );

@@ -2,23 +2,38 @@ import { RESET } from '../Contacts/Contacts.types';
 import { EDIT_MESSAGE } from './Editor.types';
 import { EditorActions } from './Editor.actions';
 import { ContactsActions } from '../store/actions';
+import { LocaleActions, SET_LOCALE } from '../i18n/Locale.actions';
+import { messages } from '../i18n/messages';
+import { detectLocale, Locale } from '../i18n/locale';
 
-type State = string;
+type State = {
+  message: string;
+  // true once the user typed in the editor: their text is never replaced.
+  touched: boolean;
+};
 
-const defaultMessage = `
-<p style="text-align: center;"><span style="font-size: 32px;">Hello </span><strong style="font-size: 50px; color: rgb(230, 0, 0);">@you</strong><span style="font-size: 32px;">!!!</span></p><p style="text-align: center;"><br></p><p>Do you remember when we decided to set up a <span style="font-size: 32px; color: rgb(0, 138, 0);">S</span><span style="font-size: 32px; color: rgb(230, 0, 0);">e</span><span style="font-size: 32px; color: rgb(0, 138, 0);">c</span><span style="font-size: 32px; color: rgb(230, 0, 0);">r</span><span style="font-size: 32px; color: rgb(0, 138, 0);">e</span><span style="font-size: 32px; color: rgb(230, 0, 0);">t</span><span style="font-size: 32px;"> </span><span style="font-size: 32px; color: rgb(0, 138, 0);">S</span><span style="font-size: 32px; color: rgb(230, 0, 0);">a</span><span style="font-size: 32px; color: rgb(0, 138, 0);">n</span><span style="font-size: 32px; color: rgb(230, 0, 0);">t</span><span style="font-size: 32px; color: rgb(0, 138, 0);">a</span> with a budget of <strong>20$</strong> ?</p><p>You have to find a gift for <u style="color: rgb(0, 138, 0); font-size: 32px;">@friend</u><span style="color: rgb(0, 138, 0); font-size: 32px;"> </span></p><p><br></p><p>See you at the end of the year:</p><p><br></p><p style="text-align: center;"><span style="font-size: 50px;">😘🎄🎅🎉🍰🍾</span></p>
-`;
+const sample = (locale: Locale): State => ({
+  message: messages[locale].defaultMessage,
+  touched: false,
+});
 
 export const reducer = (
-  state: State = defaultMessage,
-  action: EditorActions | ContactsActions,
-) => {
+  state: State = sample(detectLocale()),
+  action: EditorActions | ContactsActions | LocaleActions,
+): State => {
   switch (action.type) {
     case EDIT_MESSAGE: {
-      return action.message;
+      return {
+        message: action.message,
+        touched: state.touched || action.byUser,
+      };
+    }
+    case SET_LOCALE: {
+      // Translate the sample message, but keep the user's own text.
+      return state.touched ? state : sample(action.locale);
     }
     case RESET: {
-      return defaultMessage;
+      return sample(action.locale);
     }
     default:
       return state;

@@ -2,11 +2,13 @@ import { combineReducers } from 'redux';
 import contactsReducer, * as contacts from '../Contacts/Contacts.reducer';
 import notificationsReducer from '../Notifications/Notifications.reducer';
 import editorReducer from '../Editor/Editor.reducer';
+import localeReducer from '../i18n/Locale.reducer';
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,
   notifications: notificationsReducer,
   editor: editorReducer,
+  locale: localeReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

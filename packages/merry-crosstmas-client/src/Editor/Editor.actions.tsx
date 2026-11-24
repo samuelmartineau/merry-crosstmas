@@ -1,10 +1,12 @@
 import { EDIT_MESSAGE } from './Editor.types';
 
-export const edit = (message: string) =>
+// byUser is false when Quill re-serializes the value it was given.
+export const edit = (message: string, byUser = true) =>
   ({
     type: EDIT_MESSAGE,
     message,
-  } as const);
+    byUser,
+  }) as const;
 
 export default edit;
 

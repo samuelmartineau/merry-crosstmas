@@ -6,6 +6,7 @@ import {
 import { withExtraArgument } from 'redux-thunk';
 import * as api from '../api';
 import rootReducer from './reducer';
+import { saveLocale } from '../i18n/locale';
 
 interface CustomWindow extends Window {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
@@ -19,7 +20,21 @@ const getEnhancer = () => {
   return composeEnhancers(applyMiddleware(withExtraArgument(api)));
 };
 
-export const configureStore = () => createStore(rootReducer, undefined, getEnhancer());
+export const configureStore = () => {
+  const store = createStore(rootReducer, undefined, getEnhancer());
+  // Remember the language and keep <html lang> in sync with it.
+  let locale = store.getState().locale;
+  document.documentElement.lang = locale;
+  store.subscribe(() => {
+    const next = store.getState().locale;
+    if (next !== locale) {
+      locale = next;
+      document.documentElement.lang = locale;
+      saveLocale(locale);
+    }
+  });
+  return store;
+};
 
 export { getContactById, getForbiddenById } from './reducer';
 export {
@@ -32,4 +47,5 @@ export {
   closeNotification,
   edit,
   reset,
+  setLocale,
 } from './actions';

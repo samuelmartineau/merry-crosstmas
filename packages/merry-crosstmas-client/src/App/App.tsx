@@ -12,6 +12,7 @@ import Success from './Success';
 import SendButton from './SendButton';
 import { AppState } from '../store/reducer';
 import { colors } from '../theme';
+import { useT } from '../i18n/useT';
 
 const statusCardSx = {
   background: '#fff',
@@ -26,6 +27,7 @@ const statusCardSx = {
 type Props = StateProps;
 
 export const App = ({ status }: Props) => {
+  const t = useT();
   const editing = !status.sending && !status.sended;
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -55,11 +57,19 @@ export const App = ({ status }: Props) => {
               <MerryContacts />
               <MerryEditor />
             </Box>
-            <Box component="aside" sx={{ position: { md: 'sticky' }, top: { md: 24 } }}>
+            <Box
+              component="aside"
+              sx={{ position: { md: 'sticky' }, top: { md: 24 } }}
+            >
               <EmailPreview />
               <SendButton
                 fullWidth
-                sx={{ display: { xs: 'none', md: 'flex' }, mt: 2.5, py: 2, fontSize: 16 }}
+                sx={{
+                  display: { xs: 'none', md: 'flex' },
+                  mt: 2.5,
+                  py: 2,
+                  fontSize: 16,
+                }}
               />
             </Box>
           </Box>
@@ -68,7 +78,7 @@ export const App = ({ status }: Props) => {
           <Box sx={statusCardSx}>
             <CircularProgress color="secondary" size={64} />
             <Box component="p" sx={{ color: colors.muted, mt: 3, mb: 0 }}>
-              Drawing names and sending emails…
+              {t.send.sending}
             </Box>
           </Box>
         )}
@@ -92,8 +102,12 @@ export const App = ({ status }: Props) => {
             boxShadow: '0 -8px 24px rgba(90,60,30,.08)',
           }}
         >
-          <Button variant="outlined" href={`#${PREVIEW_ID}`} sx={{ flex: 1, px: 1.5 }}>
-            👁&nbsp; Preview
+          <Button
+            variant="outlined"
+            href={`#${PREVIEW_ID}`}
+            sx={{ flex: 1, px: 1.5 }}
+          >
+            👁&nbsp; {t.send.preview}
           </Button>
           <SendButton short sx={{ flex: 1, px: 1.5 }} />
         </Box>

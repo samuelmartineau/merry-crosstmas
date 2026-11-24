@@ -8,6 +8,7 @@ import { AppState } from '../store/reducer';
 import CustomToolbar from './CustomToolbar';
 import Panel, { Tag } from '../Panel/Panel';
 import { colors, sans } from '../theme';
+import { useT } from '../i18n/useT';
 
 type StyleAttributor = { whitelist: string[] | undefined };
 
@@ -75,38 +76,42 @@ const editorSx = {
 
 type Props = StateProps & DispatchProps;
 
-const MerryEditor = ({ message, onEdit }: Props) => (
-  <Panel
-    icon="✉️"
-    title="Your message"
-    hint={
-      <>
-        Type <Tag kind="you">@you</Tag> and <Tag kind="friend">@friend</Tag>; we
-        swap in the real names for each email.
-      </>
-    }
-  >
-    <Box sx={editorSx}>
-      <CustomToolbar />
-      <ReactQuill
-        modules={modules}
-        formats={formats}
-        value={message}
-        onChange={onEdit}
-      />
-    </Box>
-  </Panel>
-);
+const MerryEditor = ({ message, onEdit }: Props) => {
+  const t = useT();
+  return (
+    <Panel
+      icon="✉️"
+      title={t.editor.title}
+      hint={
+        <>
+          {t.editor.hintBefore} <Tag kind="you">@you</Tag> {t.editor.hintAnd}{' '}
+          <Tag kind="friend">@friend</Tag>
+          {t.editor.hintAfter}
+        </>
+      }
+    >
+      <Box sx={editorSx}>
+        <CustomToolbar />
+        <ReactQuill
+          modules={modules}
+          formats={formats}
+          value={message}
+          onChange={onEdit}
+        />
+      </Box>
+    </Panel>
+  );
+};
 
 const mapStateToProps = (state: AppState) => ({
-  message: state.editor,
+  message: state.editor.message,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onEdit(value: string) {
-    dispatch(edit(value));
+  onEdit(value: string, _delta: unknown, source: string) {
+    dispatch(edit(value, source === 'user'));
   },
 });
 

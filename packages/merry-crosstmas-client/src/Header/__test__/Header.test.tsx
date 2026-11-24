@@ -1,8 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithStore } from '../../test-utils';
 import Header from '../Header';
 
 test('Header renders the brand, title and tagline', () => {
-  render(<Header />);
+  renderWithStore(<Header />);
   expect(screen.getByText('Merry Crosstmas')).toBeInTheDocument();
   expect(
     screen.getByRole('heading', { level: 1, name: /Draw names/ }),

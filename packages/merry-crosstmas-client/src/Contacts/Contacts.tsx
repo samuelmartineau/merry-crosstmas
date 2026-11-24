@@ -11,42 +11,54 @@ import ContactActions from './ContactActions';
 import Panel from '../Panel/Panel';
 import { AppState } from '../store/reducer';
 import { ThunkExtraArgument } from '../api';
+import { useT } from '../i18n/useT';
 
 export const FORM_ID = 'secret-santa-form';
 
 type Props = StateProps & DispatchProps;
 
-const Contacts = ({ contacts, swithMode, customMode, onSend }: Props) => (
-  <Panel
-    icon="👥"
-    title="Who's playing?"
-    action={
-      <FormControlLabel
-        sx={{ m: 0, '& .MuiFormControlLabel-label': { fontSize: 14, fontWeight: 500 } }}
-        control={<Switch checked={customMode} onChange={swithMode} />}
-        label="Exclusions"
-      />
-    }
-    hint="Add at least 3 friends. Turn on exclusions to stop couples drawing each other."
-  >
-    <Box
-      component="form"
-      id={FORM_ID}
-      onSubmit={onSend}
-      autoComplete="off"
-      sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.25, md: 2 }, pt: 0.5 }}
-    >
-      {contacts.map((contact) => (
-        <ContactCard
-          isRemovable={contacts.length > 3}
-          contactId={contact}
-          key={contact}
+const Contacts = ({ contacts, swithMode, customMode, onSend }: Props) => {
+  const t = useT();
+  return (
+    <Panel
+      icon="👥"
+      title={t.contacts.title}
+      action={
+        <FormControlLabel
+          sx={{
+            m: 0,
+            '& .MuiFormControlLabel-label': { fontSize: 14, fontWeight: 500 },
+          }}
+          control={<Switch checked={customMode} onChange={swithMode} />}
+          label={t.contacts.exclusions}
         />
-      ))}
-    </Box>
-    <ContactActions />
-  </Panel>
-);
+      }
+      hint={t.contacts.hint}
+    >
+      <Box
+        component="form"
+        id={FORM_ID}
+        onSubmit={onSend}
+        autoComplete="off"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: { xs: 1.25, md: 2 },
+          pt: 0.5,
+        }}
+      >
+        {contacts.map((contact) => (
+          <ContactCard
+            isRemovable={contacts.length > 3}
+            contactId={contact}
+            key={contact}
+          />
+        ))}
+      </Box>
+      <ContactActions />
+    </Panel>
+  );
+};
 
 const mapStateToProps = (state: AppState) => ({
   customMode: state.contacts.customMode,
