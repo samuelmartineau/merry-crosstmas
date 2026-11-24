@@ -13,6 +13,12 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    // In dev, forward API calls to the local server so they stay same-origin
+    // (the API sends no CORS headers). Override the target with API_PROXY.
+    proxy: {
+      '/send': process.env.API_PROXY || 'http://localhost:5000',
+      '/test': process.env.API_PROXY || 'http://localhost:5000',
+    },
   },
   test: {
     environment: 'jsdom',
