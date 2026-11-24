@@ -26,7 +26,9 @@ const Panel = ({ title, icon, action, hint, children }: Props) => (
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: 1.5,
+        flexWrap: 'wrap',
+        columnGap: 1.5,
+        rowGap: 0.5,
         mb: 0.75,
       }}
     >
@@ -36,7 +38,7 @@ const Panel = ({ title, icon, action, hint, children }: Props) => (
           m: 0,
           fontFamily: serif,
           fontSize: { xs: 21, md: 24 },
-          whiteSpace: 'nowrap',
+          minWidth: 0,
           color: colors.ink,
         }}
       >
@@ -52,7 +54,12 @@ const Panel = ({ title, icon, action, hint, children }: Props) => (
     {hint && (
       <Box
         component="p"
-        sx={{ m: '0 0 16px', color: colors.muted, fontSize: 14, lineHeight: '21px' }}
+        sx={{
+          m: '0 0 16px',
+          color: colors.muted,
+          fontSize: 14,
+          lineHeight: '21px',
+        }}
       >
         {hint}
       </Box>
@@ -61,7 +68,13 @@ const Panel = ({ title, icon, action, hint, children }: Props) => (
   </Box>
 );
 
-export const Tag = ({ kind, children }: { kind: 'you' | 'friend'; children: ReactNode }) => (
+export const Tag = ({
+  kind,
+  children,
+}: {
+  kind: 'you' | 'friend';
+  children: ReactNode;
+}) => (
   <Box
     component="span"
     sx={{

@@ -48,7 +48,10 @@ export const App = ({ status }: Props) => {
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1fr) 400px' },
+              gridTemplateColumns: {
+                xs: 'minmax(0, 1fr)',
+                md: 'minmax(0, 1fr) 400px',
+              },
               gap: { xs: 0, md: 4 },
               alignItems: 'start',
             }}
@@ -59,7 +62,7 @@ export const App = ({ status }: Props) => {
             </Box>
             <Box
               component="aside"
-              sx={{ position: { md: 'sticky' }, top: { md: 24 } }}
+              sx={{ minWidth: 0, position: { md: 'sticky' }, top: { md: 24 } }}
             >
               <EmailPreview />
               <SendButton
