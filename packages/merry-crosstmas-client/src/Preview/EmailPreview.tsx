@@ -105,11 +105,6 @@ const EmailPreview = () => {
           <Box sx={{ fontFamily: serif, fontWeight: 700, fontSize: 22 }}>
             🎅 Secret Santa 🎄
           </Box>
-          <Box
-            sx={{ ...eyebrow, fontSize: 10, color: colors.redSoft, mt: 0.25 }}
-          >
-            Merry Crosstmas
-          </Box>
         </Box>
         <Box sx={{ textAlign: 'center', p: '22px 20px 4px' }}>
           <Box sx={{ ...eyebrow, fontSize: 10, letterSpacing: '2px' }}>
